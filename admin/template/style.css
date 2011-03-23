@@ -8,15 +8,21 @@ URL : http://www.cagintranet.com/
 :link,:visited {text-decoration:none}
 h1,h2,h3,h4,h5,h6,pre,code {font-size:1em;font-weight:400;}
 ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,body,html,p,blockquote,fieldset,input {margin:0; padding:0}
-body {height:100%;font-family:Arial, Helvetica Neue, Helvetica, sans-serif;font-size:12px;background:#f9f9f9;}
+body {height:100%;font-family:Helvetica, Arial, sans-serif;font-size:75%;background:#f9f9f9;}
 a img,:link img,:visited img {border:none}
 .clear {clear:both;}
 #help {display:none;}
 .imgthumb {display:none;width:70px;}
 .imgthumb img {border:1px solid #555;}
 html {
+	font-size:100.01%;
+	color:#333;
 	overflow-y: scroll;
 }
+input,select,textarea {font:inherit;}
+small {font:inherit;}
+em {font-style:normal;font-weight:bold;}
+
 /** HEADER / NAVIGATION **/
 .header {
 	color:#FFF;
@@ -26,7 +32,6 @@ html {
 	.header .wrapper {position:relative;border:none;}
 	.wrapper .nav {
 	list-style:none;
-	font-size:13px;
 	position:absolute;
 	top:90px;
 	left:0;
@@ -34,8 +39,7 @@ html {
 	}
 	.wrapper .nav li a {
 		padding:7px 13px;
-		font-weight:100 !important;
-		text-decoration:none !important;
+		text-decoration:none;
 		display:block;
 		border-top-left-radius: 5px;
 		border-top-right-radius: 5px;
@@ -52,7 +56,7 @@ html {
 		color:#fff;
 		background:#cc0000;
 		padding:4px 10px;
-		font-weight:700 !important;
+		font-weight:700;
 		text-decoration:none !important;
 		display:block;
 		border-left:1px solid #415A66;
@@ -83,16 +87,16 @@ html {
 	#load	.wrapper .support li a.support {
 		color:#182227;
 		background:#f9f9f9;
-		font-weight:bold !important;
+		font-weight:bold;
 		}
 	.wrapper .nav li a:active, .wrapper .nav li a:focus, .wrapper .nav li a:hover, .wrapper #pill li a:hover, .wrapper #pill li a:focus {
 		color:#FFF;background:#0E1316;
 		}	
 	.wrapper .nav li {float:left; margin:0 5px 0 0;}
-	.wrapper .nav li.rightnav { float:right; margin:0 0 0 0; font-size:11px; }
+	.wrapper .nav li.rightnav { float:right; margin:0 0 0 0;}
 	.wrapper .nav li.rightnav a.first {
 		padding:4px 10px;
-		font-weight:100 !important;
+		font-weight:100;
 		text-decoration:none !important;
 		display:block;
 		border-top-right-radius: 5px;
@@ -111,7 +115,7 @@ html {
 	}
 		.wrapper .nav li.rightnav a.last {
 		padding:4px 10px;
-		font-weight:100 !important;
+		font-weight:100;
 		text-decoration:none !important;
 		display:block;
 		border-top-left-radius: 5px;
@@ -129,11 +133,11 @@ html {
 	}
 	.wrapper .nav li a em, .wrapper #pill li a em {font-style:normal;border-bottom:1px dotted #666;}
 
-	.wrapper #pill {list-style:none;position:absolute;top:0px;right:0;font-size:11px;}
+	.wrapper #pill {list-style:none;position:absolute;top:0px;right:0;}
 	.wrapper #pill li {float:right;}
 	.wrapper #pill li.leftnav a {
 		padding:4px 10px;
-		font-weight:100 !important;
+		font-weight:100;
 		text-decoration:none !important;
 		display:block;
 		border-bottom-right-radius: 5px;
@@ -146,7 +150,7 @@ html {
 	}
 		.wrapper #pill li.rightnav a {
 		padding:4px 10px;
-		font-weight:100 !important;
+		font-weight:100;
 		text-decoration:none !important;
 		display:block;
 		border-bottom-left-radius: 5px;
@@ -167,7 +171,7 @@ html {
 	padding-top:1px;
 	}
 .wrapper p {
-	line-height:18px;
+	line-height:1.6;
 	margin:0 0 20px 0;
 	}
 	.wrapper #maincontent ul, .wrapper #maincontent ol {
@@ -187,7 +191,6 @@ html {
 .inner {padding:20px;}
 .wrapper h1 {
 	font-size:20px;
-	font-family:Georgia, Times, Times New Roman, serif;
 	position:absolute;
 	top:33px;
 	left:0;
@@ -217,8 +220,7 @@ html {
 		}
 	h3 {
 		font-size:16px;
-		font-family:Georgia, Times, Times New Roman, serif;
-		font-weight:normal;
+		font-weight:bold;
 		color:#CF3805;
 		margin:0 0 20px 0;
 		}
@@ -229,8 +231,8 @@ html {
 #maincontent {width:630px;float:left;text-align:left;}
 #sidebar {width:225px;float:right;}
 #sidebar .section {background:#fff;border:1px solid #ccc;padding:20px;margin:0 0 30px 0;line-height:18px;}
-#sidebar .section p.small {font-size:11px;margin:15px 0 0 0;}
-#sidebar .section input.text {width:175px;font-size:11px;padding:4px;border:1px solid #666;}
+#sidebar .section p.small {margin:15px 0 0 0;}
+#sidebar .section input.text {width:175px;padding:4px;border:1px solid #666;}
 #sidebar .snav {list-style:none;margin:0 0 30px 0;}
 #sidebar .snav ul {list-style:none;margin:0;}
 #sidebar .snav li {margin:0 0 3px 0;}
@@ -267,7 +269,6 @@ html {
 
 .edit-nav {margin:0 0 15px 0;}
 .edit-nav a {
-	font-size:10px;
 	text-transform:uppercase;
 	display:block;
 	padding:3px 10px;
@@ -278,8 +279,8 @@ html {
 	-khtml-border-radius: 8px;
 	-webkit-border-radius: 8px;
 }
-.edit-nav select {float:right;padding:2px;border:1px solid #999;font-size:11px;}
-.edit-nav p {float:right;font-size:11px;padding:2px;margin:0;}
+.edit-nav select {float:right;padding:2px;border:1px solid #999;}
+.edit-nav p {float:right;padding:2px;margin:0;}
 
 .edit-nav {height:1%;}
 .edit-nav a:link, .edit-nav a:visited {
@@ -305,16 +306,16 @@ html {
 /* basic default table style */
 .wrapper table {border-collapse:collapse;margin:0 0 20px 0;width:585px;}
 .wrapper table td {vertical-align:top;padding:4px;border-bottom:1px solid #eee;border-top:1px solid #eee;line-height:20px !important;}
-.wrapper table th {padding:2px 4px;font-size:12px;text-shadow: #fff 1px 1px 1px;border-top:1px solid #ccc;border-bottom:1px solid #bbb;color:#333;font-weight:bold;background:#E2E2E2 url(images/gray.png) top left repeat-x;line-height:20px !important;}
+.wrapper table th {padding:2px 4px;text-shadow: #fff 1px 1px 1px;border-top:1px solid #ccc;border-bottom:1px solid #bbb;color:#333;font-weight:bold;background:#E2E2E2 url(images/gray.png) top left repeat-x;line-height:20px !important;}
 .wrapper table tr.head {}
-.wrapper table td span {font-size:11px;color:#777;line-height:14px !important;}
+.wrapper table td span {color:#777;line-height:14px !important;}
 .wrapper table tr.trodd { background:#f9f9f9;}
 .wrapper table tr#tr-index a { font-weight:bold !important;}
 .wrapper table tr.activeedit {background:#FFFFE8 !important; }
 .wrapper table tr.currentpage{ background:#FFFFD1;}
 .wrapper table tr {border-bottom:1px solid #eee;border-top:1px solid #eee;}
 table td a {font-weight:normal !important;}
-.wrapper table.healthcheck tr td {font-size:11px;}
+.wrapper table.healthcheck tr td {}
 .popup table td {padding:4px;}
 .popup table a:link, .popup table a:visited {
 	color:#415A66;
@@ -335,19 +336,15 @@ table td a {font-weight:normal !important;}
 }
 #maincontent .main pre {
 	font-family: Consolas, "Andale Mono WT", "Andale Mono", "Lucida Console", "Lucida Sans Typewriter", "DejaVu Sans Mono", "Bitstream Vera Sans Mono", "Liberation Mono", "Nimbus Mono L", Monaco, "Courier New", Courier, monospace; 
-	line-height:18px;
-	font-size:12px;
+	line-height:1.6;
 	display:block;
 }
 
 
 form p {margin:0 0 10px 0;}
 form input.text, form select.text {
-	color:#333;
 	border:1px solid #aaa;
 	padding:5px;
-	font-family:Arial, Helvetica Neue, Helvetica, sans-serif;
-	font-size:12px;
 	width:450px;
 	border-radius: 2px;
 	-moz-border-radius: 2px;
@@ -361,7 +358,7 @@ form textarea { width:575px; height:350px;line-height:18px;text-align:left;	colo
 	border:1px solid #aaa;
 	padding:5px;
 	font-family:Arial, Helvetica Neue, Helvetica, sans-serif;
-	font-size:12px;}
+	}
 form input[readonly] {
   background:#f9f9f9;
   color:#ccc;
@@ -370,12 +367,10 @@ form input[readonly] {
 
 
 textarea#codetext { height:600px; font-family: Consolas, Monaco, "Courier New", Courier, monospace;
-	font-size: 12px;line-height:18px;}
+	line-height:1.6;}
 #menu-items span {text-transform:lowercase}
 label {
-	font-size:16px;	
-	font-weight:normal;
-	font-family:Georgia, Times, Times New Roman, serif ;
+	font-weight:bold;
 	padding:2px 0 0 0;
 	color:#CF3805;
 	float:left;
@@ -384,8 +379,6 @@ label {
 }
 
 label.clean {
-	font-size:12px;	
-	font-family:arial;
 	padding:0 0 0 0;
 	color:#000;
 	float:none;
@@ -398,7 +391,6 @@ label.clean {
 form #metadata_window table.formtable input.text, form table.formtable select {
 	width:235px;
 	float:none;
-	font-size:11px;
 	padding:4px;
 }
 form table.formtable select { width:245px; } 
@@ -429,8 +421,8 @@ form.login input.text { width:250px; }
 form input.title {font-size:18px;border-color:#000; width:575px; }
 form input.example-text, textarea.example-text {
   color:#ccc !important;
-  font-style:italic !important;
-  font-weight:normal !important;
+  font-style:italic;
+  font-weight:normal;
 }
 form.input#post-metad {width:513px;}
 form input.secondary {width:250px;}
@@ -440,8 +432,8 @@ form.manyinputs textarea { width:572px; height:150px; }
 form.manyinputs p {margin:0 0 25px 0;}
 .compdiv {padding:10px 0 35px 0;}
 table.comptable {margin:0px !important;width:585px;background:#fff;border:none;padding:0;}
-table.comptable tr td {font-size:12px;border: none;padding:0;}
-table.comptable tr td code {font-size:11px;color:#666;padding:0 4px 0 0;display:block;font-family: Consolas, Monaco, "Courier New", Courier, monospace;}
+table.comptable tr td {border: none;padding:0;}
+table.comptable tr td code {color:#666;padding:0 4px 0 0;display:block;font-family: Consolas, Monaco, "Courier New", Courier, monospace;}
 table.comptable tr {border:none;border:none !important;}
 table.comptable tr td input.newtitle {margin-bottom:2px !important;}
 .wrapper a.component { float:left;font-weight:800; margin:0 5px 5px 0; padding:3px 10px; text-decoration:none; border-radius: 3px; -moz-border-radius: 3px; -khtml-border-radius: 3px; -webkit-border-radius: 3px; }
@@ -478,30 +470,30 @@ a.button {
 	font-weight:100;
 	text-decoration:none !important;
 	text-transform:uppercase;
-	font-size:11px;
+	
 }
 a.button:link, a.button:visited {background:#6CA2D1;color:#fff;}
 a.button:hover {background:#CF3805;color:#fff;}
 /* file listing table style */
-#filetypetoggle { color:#999; font-size:12px;}
-table td.delete {width:17px;text-align:center;font-size:11px;}
+#filetypetoggle { color:#999; }
+table td.delete {width:17px;text-align:center;}
 .view {width:45px;text-align:center;}
 .editl {width:40px;text-align:center;}
 .editlw {width:220px;text-align:left;}
-.delete a:link, .delete a:visited {color:#aaa !important; text-decoration:none !important; padding: 1px;display:block;font-size:11px;font-weight:normal;}
-.delete a:hover {background:#D94136 !important; color:#fff !important; text-decoration:none !important;padding: 1px;display:block;font-size:11px;font-weight:normal; }
+.delete a:link, .delete a:visited {color:#aaa !important; text-decoration:none !important; padding: 1px;display:block;font-weight:normal;}
+.delete a:hover {background:#D94136 !important; color:#fff !important; text-decoration:none !important;padding: 1px;display:block;font-weight:normal; }
 
 a.cancel:link, a.cancel:visited { font-weight:100; color:#D94136 !important;text-decoration:underline;padding: 2px;background:none !important;}
 a.cancel:hover { font-weight:100; background:#D94136 !important; color:#fff !important;text-decoration:none !important;padding: 2px;}
 a.cancel em {font-style:normal}
 
-.wrapper .secondarylink {width:17px;text-align:center;font-size:11px;}
+.wrapper .secondarylink {width:17px;text-align:center;}
 .wrapper .secondarylink a:link, .wrapper .secondarylink a:visited {color:#aaa;text-decoration:none;	font-weight:normal;padding: 1px;display:block;}
 .wrapper .secondarylink a:hover {background:#415A66;color:#FFF;text-decoration:none;font-weight:normal;padding: 1px;display:block;}
 
 
 /* backup info display */
-table.simple td {border:1px solid #eee;border-collapse:collapse;color:#555;font-size:12px;padding:4px 10px 4px 4px;}
+table.simple td {border:1px solid #eee;border-collapse:collapse;color:#555;padding:4px 10px 4px 4px;}
 table.simple {width:575px;border:1px solid #aaa;}
 
 
@@ -510,7 +502,7 @@ table.simple {width:575px;border:1px solid #aaa;}
 	border-top:1px solid #ccc;
 	margin:40px 0 0 0;
 	padding:10px 0;
-	font-size:12px;
+	
 	color:#777;
 }
 #footer p {margin:0 0 10px 0;}
@@ -521,14 +513,13 @@ table.simple {width:575px;border:1px solid #aaa;}
 .editable {padding: 3px 1px; cursor:pointer}
 .editable:hover { background:#FFFFD1; }
 
-.wrapper table td span.ERRmsg {color:#D94136;font-color:12px;}
-.wrapper table td span.OKmsg {color:#308000;font-color:12px;}
-.wrapper table td span.WARNmsg {color:#FFCC33;font-color:12px;}
+.wrapper table td span.ERRmsg {color:#D94136;}
+.wrapper table td span.OKmsg {color:#308000;}
+.wrapper table td span.WARNmsg {color:#FFCC33;}
 
 /* JQuery File upload Plugin v1.4.3 by RonnieSan - (C)2009 by Ronnie Garcia */
 
 .uploadifyQueueItem {
-	font-size: 10px;
 	padding:8px 0;
 	width:190px;
 }
@@ -593,7 +584,7 @@ span.tagMatches span {
 
 textarea.copykit {
 	font-family: "Courier New", Courier, monospace;
-	font-size:12px;
+	
 	color:#666;
 	border:1px solid #aaa;
 	line-height:17px;
@@ -606,7 +597,7 @@ textarea.copykit {
 	height:70px;
 	margin-bottom:10px;
 	}
-	#handw {z-index:1;padding:8px;background:#000;opacity:.80;color:#fff;font-size:11px;width:150px;text-align:center;margin:-50px 0 0 0;}
+	#handw {z-index:1;padding:8px;background:#000;opacity:.80;color:#fff;width:150px;text-align:center;margin:-50px 0 0 0;}
 	#handw span {font-size:15px;font-weight:bold;}
 	#jcropform .submit {margin:20px 0 0 0;}
 	#jcrop_open {}
@@ -614,7 +605,7 @@ textarea.copykit {
 	.qc_pager a {padding:5px;margin:0 10px 0 0;}
 	.qc_pager a:link,	.qc_pager a:visited {}
 	.qc_pager a:hover, .qc_pager a:focus {}
-	.qc_pager .qp_counter {margin:0 10px 0 0;font-size:11px;}
+	.qc_pager .qp_counter {margin:0 10px 0 0;}
 	.qc_pager a.qp_disabled:link,
 	.qc_pager a.qp_disabled:visited,
 	.qc_pager a.qp_disabled:hover,
