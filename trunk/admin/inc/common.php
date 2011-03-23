@@ -113,7 +113,7 @@ if( function_exists('date_default_timezone_set') && ($TIMEZONE != '' || stripos(
 
 // Language control
 if(!isset($LANG) || $LANG == '') {
-	$LANG = 'en_US';
+	$LANG = 'ja_JP';
 }
 include_once(GSLANGPATH . $LANG . '.php');
 
