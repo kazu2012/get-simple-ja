@@ -1,4 +1,4 @@
-<?php
+<?php if(!defined('IN_GS')){ die('you cannot load this page directly.'); }
 /****************************************************
 *
 * @File: 			template.php
@@ -16,13 +16,6 @@
 	<?php get_header(); ?>
 	<meta name="robots" content="index, follow" />
 	<link rel="stylesheet" type="text/css" href="<?php get_theme_url(); ?>/style.css" media="all" />
-
-	<script type="text/javascript"><!--
-		try {
-			document.execCommand("BackgroundImageCache", false, true);
-		} catch(err) {}
-		/* IE6 flicker hack from http://dean.edwards.name/my/flicker.html */
-	--></script>
 
 </head>
 <body id="<?php get_page_slug(); ?>" >
