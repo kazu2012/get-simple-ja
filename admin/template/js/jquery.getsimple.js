@@ -1,3 +1,11 @@
+/* reverseOrder : jQuery order reverser plugin
+ * Written by Corey H Maass for Arc90
+ * (c) Arc90, Inc.
+ * 
+ * Licensed under:Creative Commons Attribution-Share Alike 3.0 http://creativecommons.org/licenses/by-sa/3.0/us/
+ */
+(function($){$.fn.reverseOrder=function(){return this.each(function(){$(this).prependTo($(this).parent())})}})(jQuery);
+
 /*
  * GetSimple js file	
  */
@@ -16,11 +24,6 @@ function DeleteComp(id) {
 	return false;
 };
 			
-function zebraRows(selector, className) {
-	$(selector).parents('table').children().removeClass(className); 
-  $(selector).addClass(className);  
-};
-			
 function updateCoords(c) {
 	$('#handw').show();
   $('#x').val(c.x);
@@ -31,8 +34,7 @@ function updateCoords(c) {
   $('#picw').html(c.w);
 };
 
-function checkCoords()
-{
+function checkCoords() {
   if (parseInt($('#x').val())) return true;
   alert('Please select a crop region then press submit.');
   return false;
@@ -52,29 +54,7 @@ jQuery.fn.wait = function(time, type) {
   });
 };
 
-jQuery(document).ready(function() { 
-	
-	
-	// upload.php
-	$('#mainftp').uploadify({
-  	'uploader'	: 'template/js/uploadify/uploadify.swf',
-  	'script'		: 'upload-ajax.php',
-  	'multi'			: true,
-  	'auto'			: true,
-  	'height'		:	'17',
-  	'width'			:	'190',
-  	'buttonImg' : 'template/images/browse.png',
-  	'cancelImg' : 'template/images/cancel.png',
-		'folder'    : '../data/uploads/',
-		'scriptData': { 'sessionHash' : $('#hash').val() },
-		onProgress: function() {
-		  $('#loader').show();
-		},
-		onAllComplete: function() {
-		  $('#loader').fadeOut(500);
-		  $("#imageTable").load(location.href+" #imageTable","");
-		}	
-	});
+function attachFilterChangeEvent() {
 	$("#imageFilter").change(function(){
 		$('#loader').show();
 		var filterx = $(this).val();
@@ -85,16 +65,18 @@ jQuery(document).ready(function() {
 			$("#imageTable tr .imgthumb").hide();
 		}		
 		$("#filetypetoggle").html('&nbsp;&nbsp;/&nbsp;&nbsp;' + filterx);
-		$("#imageTable tr." + filterx)
-			.removeClass('trodd')
-			.show()
-   		.filter(':odd')
-   		.addClass('trodd');
+		$("#imageTable tr." + filterx).show();
+		$("#imageTable tr.folder").show();
+		$("#imageTable tr:first-child").show();
    	$("#imageTable tr.deletedrow").hide();
    	$('#loader').fadeOut(500);
 	});
+}
 
-    	
+jQuery(document).ready(function() { 
+	// upload.php
+	attachFilterChangeEvent();
+
 	//image.php	
 	$("select#img-info").change(function() {
 		var codetype = $(this).val();
@@ -110,10 +92,19 @@ jQuery(document).ready(function() {
     $('textarea.copykit').focus().select();
     return false;
   });
+  
+  $("a#refreshlanguage").live("click", function($e) {
+    var begin = $(this).attr('href');
+    var ending = $("#lang option:selected").val();
+    var page = begin + ending;
+    $e.preventDefault();
+	  document.location.href = page;
+  });
 		
 	
 	// components.php
-	$(".delconfirmcomp").live("click", function() {
+	$(".delconfirmcomp").live("click", function($e) {
+		$e.preventDefault();
 		$('#loader').show();
 		var message = $(this).attr("title");
 		var answer = confirm(message);
@@ -122,9 +113,10 @@ jQuery(document).ready(function() {
 	    	$(compid).slideToggle(500).remove();
 	    }
 	  $('#loader').fadeOut(500);
-	  return false;
 	});
-	$("#addcomponent").live("click", function() {
+	
+	$("#addcomponent").live("click", function($e) {
+		$e.preventDefault();
 		$('#loader').show();
 		var id = $("#id").val();
 		$("#divTxt").append('<div style="display:none;" class="compdiv" id="section-' + id + '"><table class="comptable"><tr><td><b>Title: </b><input type="text" class="text newtitle" name="title[]" value="" /></td><td class="delete"><a href="#" title="Delete Component:?" id="del-'+ id +'" onclick="DeleteComp('+ id +'); return false;" >X</a></td></tr></table><textarea name="val[]"></textarea><input type="hidden" name="slug[]" value="" /><input type="hidden" name="id[]" value="' + id + '" /><div>');
@@ -132,31 +124,47 @@ jQuery(document).ready(function() {
 		id = (id - 1) + 2;
 		$("#id").val(id);
 		$('#loader').fadeOut(500);
-		return false;
+		$('#submit_line').fadeIn();
 	});
 	$("b.editable").dblclick(function () {
 		var t = $(this).html();
-		$(this).parents('.compdiv').find(".compslugcode").remove();
-		$(this).parents('.compdiv').find("input.comptitle").remove();
-		$(this).after('<b>Title: </b><input class="text newtitle titlesaver" name="title[]" value="'+t+'" />');
-		$(this).parents('.compdiv').find("input.compslug").attr({ value: '' });
-		$(this).remove();
+		$(this).parents('.compdiv').find("input.comptitle").hide();
+		$(this).after('<div id="changetitle"><b>Title: </b><input class="text newtitle titlesaver" name="title[]" value="'+t+'" /></div>');
+		$(this).parents('.compdiv').find("input.compslug").val('');
+		$(this).hide();
+	});
+	$("input.titlesaver").live("keydown", function () {
+		var myval = $(this).val();
+		$(this).parents('.compdiv').find(".compslugcode").html("'"+myval.toLowerCase()+"'");
+		$(this).parents('.compdiv').find("b.editable").html(myval);
+	}).live("focusout", function () {
+		var myval = $(this).val();
+		$(this).parents('.compdiv').find(".compslugcode").html("'"+myval.toLowerCase()+"'");
+		$(this).parents('.compdiv').find("b.editable").html(myval);
+		$("b.editable").show();
+		$('#changetitle').remove();
 	});
 
 		
 	// table functions
-	$('table.highlight tr').hover( 
-		function() {$(this).addClass('activeedit');}, 
-		function() {$(this).removeClass('activeedit'); 
-	});
-	zebraRows('table.highlight tr:odd', 'trodd'); 
-	$('table.paginate tr').quickpaginate( { perpage: 15, showcounter: true, pager : $("#page_counter") } );
-	
+	if(jQuery().quickpaginate) {
+		$('table.paginate tr').quickpaginate( { perpage: 15, showcounter: true, pager : $("#page_counter") } );
+	}
 
 
 	// other general functions
-	$(".snav a.current").live("click", function() {
-		return false;
+	$(".snav a.current").live("click", function($e) {
+		$e.preventDefault();
+	});
+	$(".confirmation").live("click", function($e) {
+		$('#loader').show();
+		var message = $(this).attr("title");
+		var answer = confirm(message);
+	    if (!answer){
+	    	$('#loader').fadeOut(500);
+	    	return false;
+	    }
+	  $('#loader').fadeOut(500);
 	});
 	$(".delconfirm").live("click", function() {
 		var message = $(this).attr("title");
@@ -178,9 +186,12 @@ jQuery(document).ready(function() {
 			        	  counter=$("#pg_counter").html();
 				          $("#pg_counter").html(counter-1);
 				      }
-			          $('table.paginate tr').quickpaginate( { perpage: 15, showcounter: true, pager : $("#page_counter") } );
-			          
-			          //added by dniesel
+				      	if(jQuery().quickpaginate) {
+				          $('table.paginate tr').quickpaginate( { perpage: 15, showcounter: true, pager : $("#page_counter") } );
+				        }
+				        
+				        $('div.wrapper .updated').remove();
+				        $('div.wrapper .error').remove();
                 if($(response).find('div.error').html()) {
                   $('div.bodycontent').before('<div class="error">'+ $(response).find('div.error').html() + '</div>'); 
                 }
@@ -203,15 +214,28 @@ jQuery(document).ready(function() {
 	});
 	$(".updated").fadeOut(500).fadeIn(500);
 	$(".error").fadeOut(500).fadeIn(500);
-	$('a[rel*=facybox]').facybox()
-
+	if(jQuery().fancybox) {
+		$('a[rel*=facybox]').fancybox();
+	}
 	
 	// edit.php
-	$("#metadata_toggle").live("click", function() {
+	$("#metadata_toggle").live("click", function($e) {
+		$e.preventDefault();
 		$("#metadata_window").slideToggle('fast');
 		$(this).toggleClass('current');
-		return false;
 	});
+	$("#post-private").change(function(){
+	  if ($("#post-private").is(":checked")) { 
+	  	$("#post-private-wrap label").css("color", '#cc0000');
+	  } else {
+	    $("#post-private-wrap label").css("color", '#333333'); 
+	  }
+	});
+	if ($("#post-private").is(":checked")) { 
+  	$("#post-private-wrap label").css("color", '#cc0000');
+  } else {
+    $("#post-private-wrap label").css("color", '#333333'); 
+  }
 	$("#post-menu-enable").live("click", function() {
       $("#menu-items").slideToggle("fast");
 	});
@@ -219,27 +243,6 @@ jQuery(document).ready(function() {
   } else {
      $("#menu-items").css("display","none");
   }
-	$('#editftp').uploadify({
-  	'uploader'	: 'template/js/uploadify/uploadify.swf',
-  	'script'		: 'upload-ajax.php',
-  	'multi'			: true,
-  	'auto'			: true,
-  	'height'		:	'17',
-  	'width'			:	'190',
-  	'buttonImg' : 'template/images/browse.png',
-  	'cancelImg' : 'template/images/cancel.png',
-		'folder'    : '../data/uploads/',
-		'scriptData': { 'sessionHash' : $('#hash').val() },
-		onProgress: function() {
-		  $('#loader').show();
-		},
-		onAllComplete: function() {
-		  $('#loader').fadeOut(500);
-		}	
-	});
-	$('.set-example-text').example(function() {
-		return $(this).attr('rel');
-	}, {className: 'example-text'});  
   
   var edit_line = $('#submit_line span').html();
   $('#js_submit_line').html(edit_line);
@@ -251,21 +254,24 @@ jQuery(document).ready(function() {
   // pages.php
   $("#show-characters").live("click", function() {
   	 $(".showstatus").toggle();
+  	 $(this).toggleClass('current');
   });
   
   
   
   // log.php
-  $('ol.more li').reverseOrder();  
+  if(jQuery().reverseOrder) {
+	  $('ol.more li').reverseOrder(); 
+	} 
   $("ol.more").each(function() {
     $("li:gt(4)", this).hide(); /* :gt() is zero-indexed */
     $("li:nth-child(5)", this).after("<li class='more'><a href='#'>More...</a></li>"); /* :nth-child() is one-indexed */
   });
-  $("li.more a").live("click", function() {
+  $("li.more a").live("click", function($e) {
+    $e.preventDefault();
     var li = $(this).parents("li:first");
     li.parent().children().show();
     li.remove();
-    return false;
   });
   
   
@@ -283,8 +289,52 @@ jQuery(document).ready(function() {
 	});
 
 
-
-
-
+	//title filtering on pages.php
+	$('#filtertable').live("click", function($e) {
+		$e.preventDefault();
+		$("#filter-search").slideToggle();
+		$(this).toggleClass('current');
+		$('#filter-search #q').focus();
+	});
+	$("#filter-search #q").keydown(function($e){
+		if($e.keyCode == 13) {
+			$e.preventDefault();
+		}
+	});
+	$("#editpages tr:has(td.pagetitle)").each(function(){
+   var t = $(this).find('td.pagetitle').text().toLowerCase();
+   $("<td class='indexColumn'></td>").hide().text(t).appendTo(this);
+ 	});
+ 	
+	$("#filter-search #q").keyup(function(){
+		var s = $(this).val().toLowerCase().split(" ");
+		$("#editpages tr:hidden").show();
+		$.each(s, function(){
+    	$("#editpages tr:visible .indexColumn:not(:contains('" + this + "'))").parent().hide();
+ 		});
+	});
+	$("#filter-search .cancel").live("click", function($e) {
+		$e.preventDefault();
+		$("#editpages tr").show();
+		$('#filtertable').toggleClass('current');
+		$("#filter-search #q").val('');
+		$("#filter-search").slideUp();
+	});
+	
+	
+	//create new folder in upload.php
+	$('#createfolder').live("click", function($e) {
+		$e.preventDefault();
+		$("#new-folder form").show();
+		$(this).hide();
+		$('#new-folder #foldername').focus();
+	});
+	$("#new-folder .cancel").live("click", function($e) {
+		$e.preventDefault();
+		$("#new-folder #foldername").val('');
+		$("#new-folder form").hide();
+		$('#createfolder').show();
+	});
+	
 //end of javascript for getsimple
 }); 
