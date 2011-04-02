@@ -1,21 +1,24 @@
 <?php
-if (file_exists('../../gsconfig.php')) {
-	include('../../gsconfig.php');
-}
+/**
+ * Display Available Themes
+ * 
+ * This file spits out a list of available themes to the control panel. 
+ * This is provided thru an ajax call.
+ *
+ * @package GetSimple
+ * @subpackage Available-Themes
+ */
 
-// Debugging
-if (defined('GSDEBUG')){
-	error_reporting(E_ALL | E_STRICT);
-	ini_set('display_errors', 1);
-} else {
-	error_reporting(0);
-	@ini_set('display_errors', 0);
-}
+// Include common.php
+include('common.php');
 
 // Make sure register globals don't make this hackable again.
 if (isset($TEMPLATE)) unset($TEMPLATE);
 
-// Sanitise first
+/**
+ * Sanitise first
+ * @todo Maybe use Anti-XSS on this instead?
+ */
 if (isset($_GET['dir'])) {
 	$TEMPLATE = '';
 	$segments = explode('/',implode('/',explode('\\',$_GET['dir'])));
@@ -29,24 +32,11 @@ if (isset($TEMPLATE)) {
 	$TEMPLATE_FILE = ''; $template = ''; $theme_templates = '';
 
 	if ($template == '') { $template = 'template.php'; }
-	$themes_path = "../../theme/". $TEMPLATE ."/";
-	
-	$themes_handle = @opendir($themes_path) or die("Unable to open $themes_path");
-	
-	while ($file = readdir($themes_handle)) 
-	{
-		if( is_file($themes_path . $file) && $file != "." && $file != ".." ) 
-		{
-			$templates[] = $file;
-		}
-	}
-
-	sort($templates);
+	$templates = get_themes($TEMPLATE);
 	
 	$theme_templates .= '<select class="text" id="theme_files" style="width:225px;" name="f" >';
 	
-	foreach ($templates as $file) 
-	{
+	foreach ($templates as $file) {
 		if ($TEMPLATE_FILE == $file) { $sel="selected"; } else { $sel=""; };
 		$templatename=$file;
 		$theme_templates .= '<option '.@$sel.' value="'.$file.'" >'.$templatename.'</option>';
@@ -55,5 +45,6 @@ if (isset($TEMPLATE)) {
 	$theme_templates .= "</select>";
 	
 	echo $theme_templates;
-	
 }
+
+?>

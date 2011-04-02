@@ -1,44 +1,58 @@
 <?php
-/****************************************************
-*
-* @File: 	nonce.php
-* @Package:	GetSimple
-* @Action:	Protects against CSRF
-*
-*****************************************************/
+/**
+ * Nonce 
+ *
+ * @author tankmiche
+ * @link http://www.tankmiche.com/
+ *
+ * @package GetSimple
+ * @subpackage XSS
+ */
 
-//****************************************************//
-//** FUNCTION: get_nonce();  *************************//
-//**                                                **//
-//** Returns the nonce for a certain action of an   **// 
-//** admin action, mixing user and global salts.    **//
-//** TODO: add an expiration component              **//
-//****************************************************//	
-	function get_nonce($action, $file = "") {
-		global $USR;
-		global $SALT;
-		
-		if($file == "")
-			$file = $_SERVER['PHP_SELF'];
+/**
+ * Get Nonce
+ *
+ * @since 2.03
+ * @uses $USR
+ * @uses $SALT
+ *
+ * @param string $action Id of current page
+ * @param string $file Optional, default is empty string
+ * @param bool $last 
+ * @return string
+ */
+function get_nonce($action, $file = "", $last = false) {
+	global $USR;
+	global $SALT;
+	
+	if($file == "")
+		$file = $_SERVER['PHP_SELF'];
 
-		// Any problem with this?
-		$ip = $_SERVER['REMOTE_ADDR'];
+	// Any problem with this?
+	$ip = $_SERVER['REMOTE_ADDR'];
 
-		// Mix with a little salt
-		$hash=sha1($action.$file.$ip.$USR.$SALT);
+	// Limits Nonce to one hour
+	$time = $last ? time() - 3600: time(); 
+	
+	// Mix with a little salt
+	$hash=sha1($action.$file.$ip.$USR.$SALT.date('YmdH',$time));
 
-		return $hash;
-	}
+	return $hash;
+}
 
-//****************************************************//
-//** FUNCTION: check_nonce();  ***********************//
-//**                                                **//
-//** Checks the nonce returned via a POST o GET to  **// 
-//** verify if the action is legitimate (not CSRF)  **//
-//** TODO: add an expiration component              **//
-//****************************************************//	
+/**
+ * Check Nonce
+ *
+ * @since 2.03
+ * @uses get_nonce
+ *
+ * @param string $nonce
+ * @param string $action
+ * @param string $file Optional, default is empty string
+ * @return bool
+ */	
 	function check_nonce($nonce, $action, $file = ""){
-		return ( $nonce === get_nonce($action, $file) );
+		return ( $nonce === get_nonce($action, $file) || $nonce === get_nonce($action, $file, true) );
 	}
 
 ?>

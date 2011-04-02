@@ -1,26 +1,24 @@
 <?php
-/****************************************************
-*
-* @File: 	pages.php
-* @Package:	GetSimple
-* @Action:	Edit or create new pages for the website. 	
-*
-*****************************************************/
+/**
+ * All Pages
+ *
+ * Displays all pages 
+ *
+ * @package GetSimple
+ * @subpackage Page-Edit
+ */
 
 // Setup inclusions
 $load['plugin'] = true;
-
-// Relative
-$relative = '../';
 
 // Include common.php
 include('inc/common.php');
 
 // Variable settings
 login_cookie_check();
-$id 		= @$_GET['id'];
-$ptype 		= @$_GET['type'];
-$path 		= tsl('../data/pages/');
+$id     =  isset($_GET['id']) ? $_GET['id'] : null;
+$ptype    = isset($_GET['type']) ? $_GET['type'] : null; 
+$path 		= GSDATAPAGESPATH;
 $counter 	= '0';
 $table 		= '';
 
@@ -34,7 +32,6 @@ if (count($filenames) != 0) {
 		if (isFile($file, $path, 'xml')) {
 			$data = getXML($path .$file);
 			$status = $data->menuStatus;
-			//$pagesArray[$count]['title'] = $data->title;
 			$pagesArray[$count]['title'] = html_entity_decode($data->title, ENT_QUOTES, 'UTF-8');
 			$pagesArray[$count]['parent'] = $data->parent;
 			$pagesArray[$count]['menuStatus'] = $data->menuStatus;
@@ -55,31 +52,14 @@ if (count($filenames) != 0) {
 }
 
 $pagesSorted = subval_sort($pagesArray,'sort');
-$counter = "0";
-if (count($pagesSorted) != 0) { 
-	foreach ($pagesSorted as $page) {	
-		$counter++;
-		if ($page['parent'] != '') {$page['parent'] = $page['parent']."/"; $dash = '<span>&nbsp;&nbsp;&lfloor;&nbsp;&nbsp;&nbsp;</span>'; } else { $dash = ""; }
-		$table .= '<tr id="tr-'.$page['url'] .'" >';
-		if ($page['title'] == '' ) { $page['title'] = '[No Title] &nbsp;&raquo;&nbsp; <em>'. $page['url'] .'</em>'; }
-		if ($page['menuStatus'] != '' ) { $page['menuStatus'] = ' <sup>['.$i18n['MENUITEM_SUBTITLE'].']</sup>'; } else { $page['menuStatus'] = ''; }
-		if ($page['private'] != '' ) { $page['private'] = ' <sup>['.$i18n['PRIVATE_SUBTITLE'].']</sup>'; } else { $page['private'] = ''; }
-		if ($page['url'] == 'index' ) { $homepage = ' <sup>['.$i18n['HOMEPAGE_SUBTITLE'].']</sup>'; } else { $homepage = ''; }
-		$table .= '<td>'. @$dash .'<a title="'.$i18n['EDITPAGE_TITLE'].': '. cl($page['title']) .'" href="edit.php?id='. $page['url'] .'" >'. cl($page['title']) .'</a><span class="showstatus toggle" >'. $homepage . $page['menuStatus'] . $page['private'] .'</span></td>';
-		$table .= '<td style="width:70px;text-align:right;" ><span>'. shtDate($page['date']) .'</span></td>';
-		$table .= '<td class="secondarylink" >';
-		$table .= '<a title="'.$i18n['VIEWPAGE_TITLE'].': '. cl($page['title']) .'" target="_blank" href="'. find_url($page['url'],$page['parent']) .'">#</a>';
-		$table .= '</td>';
-		$table .= '<td class="delete" ><a class="delconfirm" href="deletefile.php?id='. $page['url'] .'&nonce='.get_nonce("delete", "deletefile.php").'" title="'.$i18n['DELETEPAGE_TITLE'].': '. stripslashes(strip_tags(html_entity_decode($page['title']))) .'" >X</a></td></tr>';
-		
-	}
-}
+$table = get_pages_menu('','',0);
+
 ?>
 
-<?php get_template('header', cl($SITENAME).' &raquo; '.$i18n['PAGE_MANAGEMENT']); ?>
+<?php get_template('header', cl($SITENAME).' &raquo; '.i18n_r('PAGE_MANAGEMENT')); ?>
 	
 	<h1>
-		<a href="<?php echo $SITEURL; ?>" target="_blank" ><?php echo cl($SITENAME); ?></a> <span>&raquo;</span> <?php echo $i18n['PAGE_MANAGEMENT']; ?> <span>&raquo;</span> <?php echo $i18n['ALL_PAGES']; ?>		
+		<a href="<?php echo $SITEURL; ?>" target="_blank" ><?php echo cl($SITENAME); ?></a> <span>&raquo;</span> <?php i18n('PAGE_MANAGEMENT'); ?> <span>&raquo;</span> <?php i18n('ALL_PAGES'); ?>		
 	</h1>
 	
 	<?php 
@@ -91,13 +71,18 @@ if (count($pagesSorted) != 0) {
 	
 	<div id="maincontent">
 		<div class="main">
-			<label><?php echo $i18n['PAGE_MANAGEMENT']; ?></label>
-			<div class="edit-nav" ><p><?php echo $i18n['TOGGLE_STATUS']; ?> &nbsp;<input type="checkbox" id="show-characters" value="" /></p><div class="clear" ></div></div>
+			<h3 class="floated"><?php i18n('PAGE_MANAGEMENT'); ?></h3>
+			<div class="edit-nav clearfix" ><p><a href="#" id="filtertable" ><?php i18n('FILTER'); ?></a><a href="#" id="show-characters" ><?php i18n('TOGGLE_STATUS'); ?></a></div>
+			<div id="filter-search">
+				<form><input type="text" autocomplete="off" class="text" id="q" placeholder="<?php echo lowercase(i18n_r('FILTER')); ?>..." /> &nbsp; <a href="pages.php" class="cancel"><?php i18n('CANCEL'); ?></a></form>
+			</div>
 			<table id="editpages" class="edittable highlight paginate">
+				<tr><th><?php i18n('PAGE_TITLE'); ?></th><th style="text-align:right;" ><?php i18n('DATE'); ?></th><th></th><th></th></tr>
 				<?php echo $table; ?>
 			</table>
-			<div id="page_counter" class="qc_pager"></div> 	
-			<p><em><b><span id="pg_counter"><?php echo $counter; ?></span></b> <?php echo $i18n['TOTAL_PAGES']; ?></em></p>
+			<?php if(defined('GSPAGER')) { ?><div id="page_counter" class="qc_pager"></div><?php } ?>	
+			<!-- p><em><b><span id="pg_counter"><?php echo $counter; ?></span></b> <?php i18n('TOTAL_PAGES'); ?></em></p -->
+			
 		</div>
 	</div><!-- end maincontent -->
 	
