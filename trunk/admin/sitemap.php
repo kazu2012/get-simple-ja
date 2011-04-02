@@ -1,17 +1,15 @@
 <?php
-/****************************************************
-*
-* @File: 	sitemap.php
-* @Package:	GetSimple
-* @Action:	Creates sitemap.xml in the site's root. 	
-*
-*****************************************************/
+/**
+ * Sitemap
+ *
+ * Creates sitemap.xml in the site's root.
+ *
+ * @package GetSimple
+ * @subpackage Sitemap
+ */
 
 // Setup inclusions
 $load['plugin'] = true;
-
-// Relative
-$relative = '../';
 
 // Include common.php
 include('inc/common.php');
@@ -20,7 +18,7 @@ include('inc/common.php');
 if ($_REQUEST['s'] === $SESSIONHASH) {
 
 	// Variable settings
-	$path = $relative. 'data/pages/';
+	$path = GSDATAPAGESPATH;
 	$count="0";
 	
 	$filenames = getFiles($path);
@@ -47,7 +45,7 @@ if ($_REQUEST['s'] === $SESSIONHASH) {
 	
 	if (count($pagesSorted) != 0)
 	{ 
-		$xml = @new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset></urlset>');
+		$xml = new SimpleXMLElement('<?xml version="1.0" encoding="UTF-8"?><urlset></urlset>');
 		$xml->addAttribute('xsi:schemaLocation', 'http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd', 'http://www.w3.org/2001/XMLSchema-instance');
 		$xml->addAttribute('xmlns', 'http://www.sitemaps.org/schemas/sitemap/0.9');
 		
@@ -82,41 +80,41 @@ if ($_REQUEST['s'] === $SESSIONHASH) {
 			}
 			
 			//create xml file
-			$file = $relative .'sitemap.xml';
+			$file = GSROOTPATH .'sitemap.xml';
 			exec_action('save-sitemap');
 			XMLsave($xml, $file);
 		}
 	}
 	
 	// Variables for website
-	$spath 		= $relative .'data/other/';
+	$spath 		= GSDATAOTHERPATH;
 	$sfile 		= "website.xml";
 	$data 		= getXML($spath . $sfile);
 	$SITEURL 	= $data->SITEURL;
 	
 	if (!defined('GSDONOTPING')) {
-		if (file_exists($relative .'sitemap.xml')){
+		if (file_exists(GSROOTPATH .'sitemap.xml')){
 			if( 200 === ($status=pingGoogleSitemaps($SITEURL.'sitemap.xml')))	{
-				$response = $i18n['SITEMAP_CREATED'];
-				header('location: theme.php?success=' . $response);
+				$response = i18n_r('SITEMAP_CREATED');
+				redirect('theme.php?success=' . urlencode($response));
 				exit;
 			} else {
-				$response = $i18n['SITEMAP_ERRORPING'];
-				header('location: theme.php?err=' . $response);
+				$response = i18n_r('SITEMAP_ERRORPING');
+				redirect('theme.php?err=' . urlencode($response));
 				exit;
 			}
 		} else {
-			$response = $i18n['SITEMAP_ERROR'];
-			header('location: theme.php?err=' . $response);	
+			$response = i18n_r('SITEMAP_ERROR');
+			redirect('theme.php?err=' . urlencode($response));	
 			exit;
 		}
 	} else {
-		$response = $i18n['SITEMAP_ERRORPING'];
-		header('location: theme.php?success=' . $response);
+		$response = i18n_r('SITEMAP_ERRORPING');
+		redirect('theme.php?success=' . urlencode($response));
 		exit;
 	}
 } else {
-	die('You do not have permission to execute this page');
+	die(i18n_r('DENIED'));
 }
 
 exit;

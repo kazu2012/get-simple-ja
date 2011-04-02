@@ -1,80 +1,92 @@
 <?php if(!defined('IN_GS')){ die('you cannot load this page directly.'); }
-/****************************************************
-*
-* @File: 	  login_functions.php
-* @Package:	GetSimple
-* @Action:	Functions needed for cp login page. 	
-*
-*****************************************************/
+/**
+ * Login Functions
+ *
+ * @package GetSimple
+ * @subpackage Login
+ */
 
-$MSG = "";
-
-
-
-// If the login cookie is already set, redirect user to secure panel
+$MSG = null;
+include('plugin_functions.php');
+# if the login cookie is already set, redirect user to control panel
 if(cookie_check()) {
-	header("Location: ". $cookie_redirect);                                             
+	redirect($cookie_redirect);                                             
 }
 
-	if (file_exists(GSDATAOTHERPATH.'user.xml')) {
-		$data = getXML(GSDATAOTHERPATH.'user.xml');
-		$PASSWD = $data->PWD;
-	}
-
-// Was the login form button pressed? If so, continue...
-if(isset($_POST['submitted'])) 
-{ 
-	// Initial variable setup
-	$userid = $_POST['userid'];
+# was the form submitted?
+if(isset($_POST['submitted'])) { 
+	
+	# initial variable setup
+	$user_xml = GSUSERSPATH . _id($_POST['userid']).'.xml';
+	$userid = strtolower($_POST['userid']);
 	$password = $_POST['pwd'];
-	$error = '';
-
-	// Is either the Username or Password field empty?
-	if ( !$userid || !$password ) 
-	{
-		$error = 'TRUE';
-		$MSG .= '<b>'.$i18n['ERROR'].':</b> '.$i18n['FILL_IN_REQ_FIELD'].'.<br />';
+	$error = null;
+	
+	# check the username or password fields
+	if ( !$userid || !$password ) {
+		$error = i18n_r('FILL_IN_REQ_FIELD');
 	} 
 	
-	// If both Username & Password are populated, continue...
-	if ( ! $error ) {
-		$password = passhash($password);
-
-		// Are the Username and Password both correct?
-		if ( ($userid == $USR) && ($password == $PASSWD) ) {
-			$authenticated = true;  // Successful Login
-		} else {
-			$authenticated = false;  // Unsuccessful Login
-			
-			$xmlfile = GSDATAOTHERPATH.'logs/failedlogins.log';
-			
-			if ( ! file_exists($xmlfile) ) 	{ 
-				$xml = new SimpleXMLExtended('<channel></channel>');
-			} else {
-				$xmldata = file_get_contents($xmlfile);
-				$xml = new SimpleXMLExtended($xmldata);
-			}
-			
-			$thislog = $xml->addChild('entry');
-			$thislog->addChild('date', date('r'));
-			$cdata = $thislog->addChild('Username');
-			$cdata->addCData(htmlentities($userid, ENT_QUOTES));
-			$cdata = $thislog->addChild('IP_Address');
-			$ip = getenv("REMOTE_ADDR"); 
-			$cdata->addCData(htmlentities($ip, ENT_QUOTES));
-			XMLsave($xml, $xmlfile);
-			
-		}
+	# check for any errors
+	if ( !$error ) {
 		
-		// Was there a Successful Logon attempt?
-		if( $authenticated ) {
-			// Set the login cookie, then redirect user to secure panel		
-			create_cookie();
-			header("Location: ". $cookie_redirect); 
+		exec_action('successful-login-start');
+		
+		# hash the given password
+		$password = passhash($password);
+		
+		# does this user exist?
+		if (file_exists($user_xml)) {
+
+			# pull the data from the user's data file
+			$data = getXML($user_xml);
+			$PASSWD = $data->PWD;
+			$USR = strtolower($data->USR);
+
+			
+			# do the username and password match?
+			if ( ($userid == $USR) && ($password == $PASSWD) ) {
+				$authenticated = true;
+			} else {
+				$authenticated = false;
+				
+				# add login failure to failed logins page
+				$xmlfile = GSDATAOTHERPATH.'logs/failedlogins.log';
+				if ( ! file_exists($xmlfile) ) 	{ 
+					$xml = new SimpleXMLExtended('<channel></channel>');
+				} else {
+					$xmldata = file_get_contents($xmlfile);
+					$xml = new SimpleXMLExtended($xmldata);
+				}
+				$thislog = $xml->addChild('entry');
+				$thislog->addChild('date', date('r'));
+				$cdata = $thislog->addChild('Username');
+				$cdata->addCData(htmlentities($userid, ENT_QUOTES));
+				$cdata = $thislog->addChild('IP_Address');
+				$ip = getenv("REMOTE_ADDR"); 
+				$cdata->addCData(htmlentities($ip, ENT_QUOTES));
+				XMLsave($xml, $xmlfile);
+				
+			} # end password match check
+			
 		} else {
-			$MSG .= '<b>'.$i18n['ERROR'].':</b> '.$i18n['LOGIN_FAILED'].'.';
-		}
-	}
-}
+			# user doesnt exist in this system
+			$authenticated = false;
+		}		
+		
+		# is this successful?
+		if( $authenticated ) {
+			# YES - set the login cookie, then redirect user to secure panel		
+			create_cookie();
+			setcookie('GS_ADMIN_USERNAME', $USR);
+			exec_action('successful-login-end');
+			redirect($cookie_redirect); 
+		} else {
+			# NO - show error message
+			$error = i18n_r('LOGIN_FAILED');
+		} # end authenticated check
+		
+	} # end error check
 	
+} # end submission check
 ?>

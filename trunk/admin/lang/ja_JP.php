@@ -1,16 +1,16 @@
 <?php
-/****************************************************
-*
-* @File: 				us_US.php
-* @Package:			GetSimple
-* @Subject:			US English language file
-* @Date:				01 Sept 2009
-* @Revision:		23 Jan 2010
-* @Version:			GetSimple 2.0
-* @Status:			Final
-* @Traductors: 	Chris Cagle 	
-*
-*****************************************************/
+/**
+ * English Language File
+ *
+ * Date:				2011-04-02
+ * Revision:		Apr 2011
+ * Version:			GetSimple 3.0
+ * Traductors: 	Chris Cagle 
+ *
+ * @package GetSimple
+ * @subpackage Language
+ */
+
 
 $i18n = array(
 
@@ -42,6 +42,9 @@ $i18n = array(
 "LABEL_USERNAME"		=>	"ログイン名",//"Username",
 "LABEL_EMAIL"				=>	"メールアドレス",//"Email Address",
 "LABEL_INSTALL"			=>	"インストールを実行する",
+"SELECT_LANGUAGE"		=> "言語を選んでください",
+"CONTINUE_SETUP" 		=> "次に進む",
+"DOWNLOAD_LANG" 		=> "他の言語ファイルが必要な場合は",
 
 /* 
  * For: pages.php
@@ -71,7 +74,6 @@ $i18n = array(
 "CREATE_NEW_PAGE"		=>	"新規ページ作成",//"Create New Page",
 "VIEW"							=>	"プレビュー",//"<em>V</em>iew", // 'v' is the accesskey identifier
 "PAGE_OPTIONS"			=>	"オプション設定",//"Page <em>O</em>ptions", // 'o' is the accesskey identifier
-"TOGGLE_EDITOR"			=>	"エディタ変更",//"To<em>g</em>gle Editor", // 'g' is the accesskey identifier
 "SLUG_URL"					=>	"スラッグ(URLの一部になります)",
 "TAG_KEYWORDS"			=>	"キーワード(タグ)",//"Tags &amp; Keywords",
 "PARENT_PAGE"				=>	"親ページ",//"Parent Page",
@@ -103,9 +105,7 @@ $i18n = array(
 /* 
  * For: logout.php
 */
-"LOGGED_OUT"				=>	"ログアウト",//"Logged Out",
-"MSG_LOGGEDOUT"			=>	"ログアウトしました。",//"You are now logged out.",
-"MSG_PLEASE"				=>	"こまめにログアウトするようにしましょう",//"Please log back in if you need to re-access your account", 
+"MSG_LOGGEDOUT"				=>	"ログアウトしました",//"Logged Out",
 
 /* 
  * For: index.php
@@ -115,9 +115,6 @@ $i18n = array(
 "PASSWORD"					=>	"パスワード",//"Password",
 "FORGOT_PWD"				=>	"パスワードをお忘れですか？",//"Forgot your password?",
 "CONTROL_PANEL"			=>	"サイト管理画面",//"Control Panel",
-"LOGIN_REQUIREMENT"	=>	"ログイン時の注意点",//"Login Requirements",
-"WARN_JS_COOKIES"		=>	"お使いのブラウザでCookieとjavascriptを有効にしてください。",//"Cookies and javascript need to be enabled in your browser to work properly",
-"WARN_IE6"					=>	"Internet Explorer 6では正常に動作しない場合があります。",//"Internet Explorer 6 may work, but it is not supported",
 
 /* 
  * For: navigation.php
@@ -144,10 +141,8 @@ $i18n = array(
 "SETTINGS" 					=> 	"設定",//"Settings",
 "ERROR" 						=> 	"エラー",//"Error",
 "BTN_SAVESETTINGS" 	=> 	"設定を保存",//"Save Settings",
-"EMAIL_ON_404" 			=> 	"Email administrator on 404 errors",//"Email administrator on 404 errors",
-"VIEW_404" 					=> 	"404エラー",//"View 404 Errors",
-"VIEW_FAILED_LOGIN"	=> 	"ログイン失敗",//"View Failed Login Attempts",
-"VIEW_TICKETS" 			=> 	"あなたの投稿チケット",//"View Your Submitted Tickets",
+"VIEW_FAILED_LOGIN"	=> 	"View Failed Login Attempts",
+
 
 /* 
  * For: log.php
@@ -173,6 +168,7 @@ $i18n = array(
 "YES"								=>	"Yes",//"Yes",
 "NO"								=>	"No",//"No",
 "DATE"							=>	"日付",//"Date",
+"PERMS"							=>  "Perms",
 
 /* 
  * For: components.php
@@ -219,33 +215,21 @@ $i18n = array(
 "LANGUAGE"					=>	"言語設定",//"Language",
 "USE_FANCY_URLS"		=>	"<b>Fancy URLを使用する</b>  ※mod_rewriteを有効にする必要があります",//"<b>Use Fancy URLs</b> - Requires that your host has mod_rewrite enabled",
 "ENABLE_HTML_ED"		=>	"WYSIWYGエディタを有効にする",//"<b>Enable the HTML editor</b>",
-"USER_SETTINGS"			=>	"ユーザー設定",//"User Login Settings",
 "WARN_EMAILINVALID"	=>	"警告: このメールアドレスは有効ではありません",//"WARNING: This email address does not look valid!",
 "ONLY_NEW_PASSWORD"	=>	"パスワードを変更する場合のみ入力",//"Only provide a password below if you want to change your current one",
 "NEW_PASSWORD"			=>	"新しいパスワード",//"New Password",
 "CONFIRM_PASSWORD"	=>	"パスワードの確認入力",//"Confirm Password",
 "PASSWORD_NO_MATCH"	=>	"パスワードが一致しません",//"Passwords do not match",
-
-/* 
- * For: 404-mailer.php
-*/
-"404_ENCOUNTERED"		=>	"自動:404エラーが発生しました",//"Auto: 404 Error Encountered on",
-"404_AUTO_MSG"			=>	"これはあなたのWebサイトからの自動メッセージです。",//"This is an automated message from your website",
-"PAGE_CANNOT_FOUND"	=>	"『ページが見つかりません』というエラーが検出されました",//"A 'page not found' error was encountered on the",
-"DOMAIN"						=>	"ドメイン",//"domain",
-"DETAILS"						=>	"詳細",//"DETAILS",
-"WHEN"							=>	"When",//"When",
-"WHO"								=>	"Who",//"Who",
-"FAILED_PAGE"				=>	"失敗したページ",//"Failed Page",
-"REFERRER"					=>	"リファラー",//"Referrer",
-"BROWSER"						=>	"ブラウザ",//"Browser",
+"PERMALINK" 				=> 	"固定リンク(Permalink)のパターン",
+"MORE" 							=> 	"[さらに詳しい情報]",
+"HELP" 							=> 	"ヘルプ",
 
 /* 
  * For: health-check.php
 */
 "WEB_HEALTH_CHECK"	=>	"Webサイトチェック",//"Website Health Check",
 "VERSION"						=>	"バージョン",//"Version",
-"UPG_NEEDED"				=>	"アップグレードするために必要",//"Upgrade needed to",
+"UPG_NEEDED"				=>	"新しいバージョンがリリースされています",//"Upgrade needed to",
 "CANNOT_CHECK"			=>	"使用中のバージョンをチェックすることができません",//"Unable to check. Your version is",
 "LATEST_VERSION"		=>	"最新バージョン",//"Latest version installed",
 "SERVER_SETUP"			=>	"サーバーのセットアップ",//"Server Setup",
@@ -260,8 +244,8 @@ $i18n = array(
 "MISSING_FILE"			=>	"ファイルが見つかりません",//"Missing file",
 "BAD_FILE"					=>	"不良ファイル",//"Bad file",
 "NO_FILE"						=>	"ファイルがありません",//"No file",
-"GOOD_D_FILE"				=>	"ファイルを許可しない",//"Good 'Deny' file",
-"GOOD_A_FILE"				=>	"ファイルを許可する",//"Good 'Allow' file",
+"GOOD_D_FILE"				=>	"外部からアクセスさせない",//"Good 'Deny' file",
+"GOOD_A_FILE"				=>	"外部アクセスを許可する",//"Good 'Allow' file",
 "CANNOT_DEL_FILE"		=>	"ファイルを削除できません",//"Cannot Delete File",
 "DOWNLOAD"					=>	"ダウンロード",//"Download",
 "WRITABLE"					=>	"書き込み可能",//"Writable",
@@ -271,8 +255,6 @@ $i18n = array(
  * For: footer.php
 */
 "POWERED_BY"				=>	"Powered by",
-"PRODUCTION"				=>	"A %s Production",
-"SUBMIT_TICKET"			=>	"Submit Ticket",
 
 /* 
  * For: backups.php
@@ -304,6 +286,7 @@ $i18n = array(
 "TAB_FILES"					=>	"ファイル",//"<em>F</em>iles",
 "TAB_THEME"					=>	"テーマ",//"<em>T</em>heme",
 "TAB_BACKUPS"				=>	"バックアップ",//"<em>B</em>ackups",
+"PLUGINS_NAV" 			=>  "プラグイン",// "Plu<em>g</em>ins",
 "TAB_SETTINGS"			=>	"設定",//"<em>S</em>ettings",
 "TAB_SUPPORT"				=>	"サポート",//"Supp<em>o</em>rt",
 "TAB_LOGOUT"				=>	"ログアウト",//"<em>L</em>ogout",
@@ -318,10 +301,9 @@ $i18n = array(
  * For: sidebar-support.php
 */
 "SIDE_SUPPORT_LOG"	=>	"システムログ",//"Supp<em>o</em>rt Settings &amp; Logs",
-"SIDE_VIEW_LOG"			=>	"ログ一覧",//"View Log",
 "SIDE_HEALTH_CHK"		=>	"サーバの状態",//"Website <em>H</em>ealth Check",
-"SIDE_SUBMIT_TICKET"=>	"Submit Tic<em>k</em>et",//"Submit Tic<em>k</em>et",
 "SIDE_DOCUMENTATION"=>	"ドキュメント",//"<em>D</em>ocumentation",
+"SIDE_VIEW_LOG"			=>	"ログ一覧",//"View Log",
 
 /* 
  * For: sidebar-theme.php
@@ -339,13 +321,13 @@ $i18n = array(
 "SIDE_VIEW_PAGES"		=>	"ページの一覧を表示",//"View All <em>P</em>ages",
 
 /* 
- * For: sidebar-pages.php
+ * For: sidebar-settings.php
 */
 "SIDE_GEN_SETTINGS"	=>	"サイト基本設定",//"General <em>S</em>ettings",
 "SIDE_USER_PROFILE"	=>	"ユーザー設定",//"<em>U</em>ser Profile",
 
 /* 
- * For: sidebar-pages.php
+ * For: sidebar-backups.php
 */
 "SIDE_VIEW_BAK"			=>	"ページのバックアップを表示",//"View Page Backup",
 "SIDE_WEB_ARCHIVES"	=>	"Webサイトをアーカイブ",//"<em>W</em>ebsite Archives",
@@ -403,26 +385,12 @@ $i18n = array(
 "DATE_FORMAT"									=>	"Y-m-d", //please keep short
 "DATE_AND_TIME_FORMAT"				=>	"Y-m-d H:i:s", //date and time
 
-
-/***********************************************************************************
- * SINCE Version 2.0
-***********************************************************************************/
-
-
 /* 
  * For: welcome.php
 */
 "WELCOME_MSG"				=>	"GetSimpleをインストールしました。",
 "WELCOME_P"					=>	"GetSimpleは、使いやすい管理画面とシンプルなテンプレートシステムが特長。手頃なサイズのサイトを管理するのに適しており、説明書がなくても今日から使いこなせます。",
-"GETTING_STARTED"		=>	"まずは下記をチェックしましょう。",
-
-/* 
- * For: install.php
-*/
-
-"SELECT_LANGUAGE"		=> "言語を選んでください。",
-"CONTINUE_SETUP" 		=> "次に進む",
-"DOWNLOAD_LANG" 		=> "他の言語ファイルが必要な場合は",
+"GETTING_STARTED"		=>	"ここから始めましょう。",
 
 /* 
  * For: image.php
@@ -433,10 +401,9 @@ $i18n = array(
 "CREATE_ONE" 				=> "create one",
 "IMG_CONTROl_PANEL" => "Image Control Panel",
 "ORIGINAL_IMG" 			=> "Original Image",
-"CLIPBOARD_COPY" 		=> "Copy to clipboard",
-"CLIPBOARD_INSTR" 	=> "Select All then <em>ctrl-c</em> or <em>command-c</em>",
+"CLIPBOARD_INSTR" 	=> "Select All",
 "CREATE_THUMBNAIL" 	=> "Create Thumbnail",
-"CROP_INSTR" 				=> "<em>ctrl-Q</em> or <em>command-Q</em> for square",
+"CROP_INSTR_NEW" 		=> "<em>ctrl-B</em> or <em>command-B</em> for square",
 "SELECT_DIMENTIONS" => "Selection Dimentions",
 "HTML_ORIG_IMG" 		=> "Original Image HTML",
 "LINK_ORIG_IMG" 		=> "Original Image Link",
@@ -451,26 +418,67 @@ $i18n = array(
 "PLUGINS_MANAGEMENT"=> "プラグイン管理",
 "PLUGINS_INSTALLED" => "個のプラグインがインストール済みです。",
 "SHOW_PLUGINS"			=> "プラグイン一覧",
-"PLUGINS_NAV" 			=> "プラグイン",
-"PLUGIN_NAME" 			=> "Name",
-"PLUGIN_DESC" 			=> "Description",
-"PLUGIN_VER" 				=> "Version",
+"PLUGIN_NAME" 			=> "プラグイン名",
+"PLUGIN_DESC" 			=> "詳細情報",
+"PLUGIN_VER" 				=> "バージョン",
+
+
 
 
 /***********************************************************************************
- * SINCE Version 2.02
+ * SINCE Version 3.0
 ***********************************************************************************/
 
+/* 
+ * For: setup.php
+ */
 
-"PERMALINK" => "Custom Permalink Structure",
-"MORE" => "more",
-"HELP" => "help",
+"ROOT_HTACCESS_ERROR" => "Failed to create .htaccess in root! Please copy <b>%s</b> to <b>.htaccess</b> and change <code>%s</code> to <code>%s</code>",
+"REMOVE_TEMPCONFIG_ERROR" => "Failed to remove <b>%s</b>! Please do it manually.",
+"MOVE_TEMPCONFIG_ERROR" => "Failed to rename <b>%s</b> to <b>%s</b>! Please do it manually.",
+"KILL_CANT_CONTINUE" => "Cannot continue. Please fix errors and try again.",
+"REFRESH" => "Refresh",
+"BETA"=> "Beta / Bleeding Edge",
 
+/*
+ * Misc Cleanup Work
+ */
+ 
+"HOMEPAGE_DELETE_ERROR" => "You cannot delete your homepage", //deletefile
+"NO_ZIPARCHIVE" => "ZipArchive extension is not installed. Unable to continue", //zip
+"REDIRECT_MSG"=> "If your browser does not redirect you, click <a href=\"%s\">here</a>", //basic
+"REDIRECT"=> "リダイレクト", //basic
+"DENIED"=> "Denied", //sitemap
+"DEBUG_MODE"=> "デバッグモード", //nav-include
+"DOUBLE_CLICK_EDIT"=> "Double Click to Edit", //components
+"THUMB_SAVED"=> "Thumbnail Saved", //image
+"EDIT_COMPONENTS"		=>	"コンポーネントを編集", //components
+"REQS_MORE_INFO"=> "For more information on the required modules, visit the <a href=\"%s\" target=\"_blank\" >requirements page</a>.", //install & health-check
+"SYSTEM_UPDATE" => "システムアップデート", // update.php
+"AUTHOR" 				=> "作者", //plugins.php
+"ENABLE" 				=> "有効", //plugins.php
+"DISABLE" 				=> "無効", //plugins.php
+"NO_THEME_SCREENSHOT" => "No theme screenshot available", //theme.php
+"UNSAVED_INFORMATION" => "You are about to leave this page and will lose any unsaved information.", //edit.php
+"BACK_TO_WEBSITE" => "Back to Website", //index & resetpassword
+"SUPPORT_FORUM" => "サポートフォーラム", //support.php
+"FILTER" => "フィルター", //pages.php
+"UPLOADIFY_BUTTON" => "画像またはファイルをアップロード", //upload.php
+"FILE_BROWSER" => "ファイルブラウザ", //filebrowser.php
+"SELECT_FILE" => "ファイルを選択", //filebrowser.php
+"CREATE_FOLDER" => "フォルダを新規作成", //upload.php
+"THUMBNAIL" => "サムネイル", //filebrowser.php
+"ERROR_FOLDER_EXISTS" => "The folder you are trying to create already exists", //upload.php
+"FOLDER_CREATED" => "The new folder was successfully created: <strong>%s</strong>", //upload.php
+"ERROR_CREATING_FOLDER" => "There was an error creating the new folder", //upload.php
+"DELETE_FOLDER" => "フォルダを削除", //upload.php
+"FILE_NAME" => "ファイル名", //multiple tr header rows
+"FILE_SIZE" => "サイズ", //multiple tr header rows
+"ARCHIVE_DATE" => "アーカイブした日時", //archive.php
+"CKEDITOR_LANG" => "ja", // edit.php ; set CKEditor language, don't forget to include CKEditor language file in translation zip
 
-"" => "not translated"
+"X" => "not translated"
 
 
 
 );
-
-?>

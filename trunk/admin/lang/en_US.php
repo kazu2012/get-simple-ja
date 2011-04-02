@@ -1,16 +1,16 @@
 <?php
-/****************************************************
-*
-* @File: 				us_US.php
-* @Package:			GetSimple
-* @Subject:			US English language file
-* @Date:				01 Sept 2009
-* @Revision:		23 Jan 2010
-* @Version:			GetSimple 2.0
-* @Status:			Final
-* @Traductors: 	Chris Cagle 	
-*
-*****************************************************/
+/**
+ * English Language File
+ *
+ * Date:				16 Oct 2010
+ * Revision:		Feb 2011
+ * Version:			GetSimple 3.0
+ * Traductors: 	Chris Cagle 
+ *
+ * @package GetSimple
+ * @subpackage Language
+ */
+
 
 $i18n = array(
 
@@ -42,6 +42,9 @@ $i18n = array(
 "LABEL_USERNAME"		=>	"Username",
 "LABEL_EMAIL"				=>	"Email Address",
 "LABEL_INSTALL"			=>	"Install Now!",
+"SELECT_LANGUAGE"		=> "Select your language",
+"CONTINUE_SETUP" 		=> "Continue with Setup",
+"DOWNLOAD_LANG" 		=> "Download Languages",
 
 /* 
  * For: pages.php
@@ -67,17 +70,16 @@ $i18n = array(
 "NONE"							=>	"None",
 "PAGE"							=>	"Page",
 "NEW_PAGE"					=>	"New Page",
-"PAGE_EDIT_MODE"		=>	"Page Editing Mode",
+"PAGE_EDIT_MODE"		=>	"Edit Page",
 "CREATE_NEW_PAGE"		=>	"Create New Page",
-"VIEW"							=>	"<em>V</em>iew", // 'v' is the accesskey identifier
-"PAGE_OPTIONS"			=>	"Page <em>O</em>ptions", // 'o' is the accesskey identifier
-"TOGGLE_EDITOR"			=>	"To<em>g</em>gle Editor", // 'g' is the accesskey identifier
+"VIEW"							=>	"<em>V</em>iew",
+"PAGE_OPTIONS"			=>	"Page Optio<em>n</em>s",
 "SLUG_URL"					=>	"Slug/URL",
 "TAG_KEYWORDS"			=>	"Tags &amp; Keywords",
 "PARENT_PAGE"				=>	"Parent Page",
 "TEMPLATE"					=>	"Template",
-"KEEP_PRIVATE"			=>	"Keep Private?",
-"ADD_TO_MENU"				=>	"Add to Menu",
+"KEEP_PRIVATE"			=>	"Keep Page Private?",
+"ADD_TO_MENU"				=>	"Add to Menu?",
 "PRIORITY"					=>	"Priority",
 "MENU_TEXT"					=>	"Menu Text",
 "LABEL_PAGEBODY"		=>	"Page Body",
@@ -103,9 +105,7 @@ $i18n = array(
 /* 
  * For: logout.php
 */
-"LOGGED_OUT"				=>	"Logged Out",
 "MSG_LOGGEDOUT"			=>	"You are now logged out.",
-"MSG_PLEASE"				=>	"Please log back in if you need to re-access your account", 
 
 /* 
  * For: index.php
@@ -114,10 +114,7 @@ $i18n = array(
 "USERNAME"					=>	"Username",
 "PASSWORD"					=>	"Password",
 "FORGOT_PWD"				=>	"Forgot your password?",
-"CONTROL_PANEL"			=>	"Control Panel",
-"LOGIN_REQUIREMENT"	=>	"Login Requirements",
-"WARN_JS_COOKIES"		=>	"Cookies and javascript need to be enabled in your browser to work properly",
-"WARN_IE6"					=>	"Internet Explorer 6 may work, but it is not supported",
+"CONTROL_PANEL"			=>	"Control Panel Login",
 
 /* 
  * For: navigation.php
@@ -130,7 +127,7 @@ $i18n = array(
 */
 "TEMPLATE_FILE" 		=> 	"Template file <b>%s</b> has successfully been updated!",
 "THEME_MANAGEMENT" 	=> 	"Theme Management",
-"EDIT_THEME" 				=> 	"Edit Theme",
+"EDIT_THEME" 				=> 	"Theme Editor",
 "EDITING_FILE" 			=> 	"Editing File",
 "BTN_SAVECHANGES" 	=> 	"Save Changes",
 "EDIT" 							=> 	"Edit",
@@ -144,10 +141,8 @@ $i18n = array(
 "SETTINGS" 					=> 	"Settings",
 "ERROR" 						=> 	"Error",
 "BTN_SAVESETTINGS" 	=> 	"Save Settings",
-"EMAIL_ON_404" 			=> 	"Email administrator on 404 errors",
-"VIEW_404" 					=> 	"View 404 Errors",
 "VIEW_FAILED_LOGIN"	=> 	"View Failed Login Attempts",
-"VIEW_TICKETS" 			=> 	"View Your Submitted Tickets",
+
 
 /* 
  * For: log.php
@@ -157,7 +152,7 @@ $i18n = array(
 "VIEWING" 					=> 	"Viewing",
 "LOG_FILE" 					=> 	"Log File",
 "CLEAR_ALL_DATA" 		=> 	"Clear all data from",
-"CLEAR_THIS_LOG" 		=> 	"<em>C</em>lear This Log", // 'c' is the accesskey identifier
+"CLEAR_THIS_LOG" 		=> 	"<em>C</em>lear This Log",
 "LOG_FILE_ENTRY" 		=> 	"LOG FILE ENTRY",
 "THIS_COMPUTER"			=>	"This Computer",
 
@@ -173,6 +168,7 @@ $i18n = array(
 "YES"								=>	"Yes",
 "NO"								=>	"No",
 "DATE"							=>	"Date",
+"PERMS"							=>  "Perms",
 
 /* 
  * For: components.php
@@ -207,7 +203,7 @@ $i18n = array(
 "YOUR_NEW"					=>	"Your new",
 "PASSWORD_IS"				=>	"password is",
 "ATTEMPT"						=>	"Attempt",
-"MSG_PLEASE_EMAIL"	=>	"Please enter the email address registered on this system, and a new password will be sent to you",
+"MSG_PLEASE_EMAIL"	=>	"Please enter the username registered on this system, and a new password will be sent to it's email address.",
 "SEND_NEW_PWD"			=>	"Send New Password",
 
 /* 
@@ -217,28 +213,16 @@ $i18n = array(
 "WEBSITE_SETTINGS"	=>	"Website Settings",
 "LOCAL_TIMEZONE"		=>	"Local Timezone",
 "LANGUAGE"					=>	"Language",
-"USE_FANCY_URLS"		=>	"<b>Use Fancy URLs</b> - Requires that your host has mod_rewrite enabled",
+"USE_FANCY_URLS"		=>	"Use Fancy URLs - <b style=\"font-weight:100\">Requires that your host has <code>mod_rewrite</code> enabled</b>",
 "ENABLE_HTML_ED"		=>	"<b>Enable the HTML editor</b>",
-"USER_SETTINGS"			=>	"User Login Settings",
 "WARN_EMAILINVALID"	=>	"WARNING: This email address does not look valid!",
 "ONLY_NEW_PASSWORD"	=>	"Only provide a password below if you want to change your current one",
 "NEW_PASSWORD"			=>	"New Password",
 "CONFIRM_PASSWORD"	=>	"Confirm Password",
 "PASSWORD_NO_MATCH"	=>	"Passwords do not match",
-
-/* 
- * For: 404-mailer.php
-*/
-"404_ENCOUNTERED"		=>	"Auto: 404 Error Encountered on",
-"404_AUTO_MSG"			=>	"This is an automated message from your website",
-"PAGE_CANNOT_FOUND"	=>	"A 'page not found' error was encountered on the",
-"DOMAIN"						=>	"domain",
-"DETAILS"						=>	"DETAILS",
-"WHEN"							=>	"When",
-"WHO"								=>	"Who",
-"FAILED_PAGE"				=>	"Failed Page",
-"REFERRER"					=>	"Referrer",
-"BROWSER"						=>	"Browser",
+"PERMALINK" 				=> 	"Custom Permalink Structure",
+"MORE" 							=> 	"Learn More...",
+"HELP" 							=> 	"help",
 
 /* 
  * For: health-check.php
@@ -271,8 +255,6 @@ $i18n = array(
  * For: footer.php
 */
 "POWERED_BY"				=>	"Powered by",
-"PRODUCTION"				=>	"A %s Production",
-"SUBMIT_TICKET"			=>	"Submit Ticket",
 
 /* 
  * For: backups.php
@@ -301,9 +283,10 @@ $i18n = array(
 */
 "WELCOME"						=>	"Welcome", // used as 'Welcome USERNAME!'
 "TAB_PAGES"					=>	"<em>P</em>ages",
-"TAB_FILES"					=>	"<em>F</em>iles",
+"TAB_FILES"					=>	"F<em>i</em>les",
 "TAB_THEME"					=>	"<em>T</em>heme",
 "TAB_BACKUPS"				=>	"<em>B</em>ackups",
+"PLUGINS_NAV" 			=>  "Plu<em>g</em>ins",
 "TAB_SETTINGS"			=>	"<em>S</em>ettings",
 "TAB_SUPPORT"				=>	"Supp<em>o</em>rt",
 "TAB_LOGOUT"				=>	"<em>L</em>ogout",
@@ -317,17 +300,16 @@ $i18n = array(
 /* 
  * For: sidebar-support.php
 */
-"SIDE_SUPPORT_LOG"	=>	"Supp<em>o</em>rt Settings &amp; Logs",
-"SIDE_VIEW_LOG"			=>	"View Log",
+"SIDE_SUPPORT_LOG"	=>	"Supp<em>o</em>rt",
 "SIDE_HEALTH_CHK"		=>	"Website <em>H</em>ealth Check",
-"SIDE_SUBMIT_TICKET"=>	"Submit Tic<em>k</em>et",
-"SIDE_DOCUMENTATION"=>	"<em>D</em>ocumentation",
+"SIDE_DOCUMENTATION"=>	"Documentation",
+"SIDE_VIEW_LOG"=>	"<em>V</em>iew Log",
 
 /* 
  * For: sidebar-theme.php
 */
 "SIDE_VIEW_SITEMAP"	=>	"<em>V</em>iew Sitemap",
-"SIDE_GEN_SITEMAP"	=>	"<em>G</em>enerate Sitemap",
+"SIDE_GEN_SITEMAP"	=>	"Generate Site<em>m</em>ap",
 "SIDE_COMPONENTS"		=>	"<em>E</em>dit Components",
 "SIDE_EDIT_THEME"		=>	"Edit T<em>h</em>eme",
 "SIDE_CHOOSE_THEME"	=>	"Choose <em>T</em>heme",
@@ -339,13 +321,13 @@ $i18n = array(
 "SIDE_VIEW_PAGES"		=>	"View All <em>P</em>ages",
 
 /* 
- * For: sidebar-pages.php
+ * For: sidebar-settings.php
 */
 "SIDE_GEN_SETTINGS"	=>	"General <em>S</em>ettings",
 "SIDE_USER_PROFILE"	=>	"<em>U</em>ser Profile",
 
 /* 
- * For: sidebar-pages.php
+ * For: sidebar-backups.php
 */
 "SIDE_VIEW_BAK"			=>	"View Page Backup",
 "SIDE_WEB_ARCHIVES"	=>	"<em>W</em>ebsite Archives",
@@ -369,7 +351,7 @@ $i18n = array(
 "ER_PROBLEM_DEL"		=>	"There was a problem deleting the file",
 "ER_COMPONENT_SAVE"	=>	"Your components have been saved",
 "ER_COMPONENT_REST"	=>	"Your components have been restored",
-"ER_CANCELLED_FAIL"	=>	"<b>Cancelled:</b> The update to this file has been cancelled",
+"ER_CANCELLED_FAIL"	=>	"<b>Cancelled:</b> This update has been cancelled",
 
 /* 
  * For: changedata.php
@@ -403,26 +385,12 @@ $i18n = array(
 "DATE_FORMAT"									=>	"M j, Y", //please keep short
 "DATE_AND_TIME_FORMAT"				=>	"F jS, Y - g:i A", //date and time
 
-
-/***********************************************************************************
- * SINCE Version 2.0
-***********************************************************************************/
-
-
 /* 
  * For: welcome.php
 */
 "WELCOME_MSG"				=>	"Thank you for choosing GetSimple as your CMS!",
 "WELCOME_P"					=>	"GetSimple makes managing your website as simple as possible with its top-of-the-class user interface and the easiest templating system around.",
 "GETTING_STARTED"		=>	"Getting Started",
-
-/* 
- * For: install.php
-*/
-
-"SELECT_LANGUAGE"		=> "Select your language",
-"CONTINUE_SETUP" 		=> "Continue with Setup",
-"DOWNLOAD_LANG" 		=> "Download additional languages",
 
 /* 
  * For: image.php
@@ -433,10 +401,9 @@ $i18n = array(
 "CREATE_ONE" 				=> "create one",
 "IMG_CONTROl_PANEL" => "Image Control Panel",
 "ORIGINAL_IMG" 			=> "Original Image",
-"CLIPBOARD_COPY" 		=> "Copy to clipboard",
-"CLIPBOARD_INSTR" 	=> "Select All then <em>ctrl-c</em> or <em>command-c</em>",
+"CLIPBOARD_INSTR" 	=> "Select All",
 "CREATE_THUMBNAIL" 	=> "Create Thumbnail",
-"CROP_INSTR" 				=> "<em>ctrl-Q</em> or <em>command-Q</em> for square",
+"CROP_INSTR_NEW" 		=> "<em>ctrl-B</em> or <em>command-B</em> for square",
 "SELECT_DIMENTIONS" => "Selection Dimentions",
 "HTML_ORIG_IMG" 		=> "Original Image HTML",
 "LINK_ORIG_IMG" 		=> "Original Image Link",
@@ -449,28 +416,69 @@ $i18n = array(
 */
 
 "PLUGINS_MANAGEMENT"=> "Plugin Management",
-"PLUGINS_INSTALLED" => "Plugins Installed",
-"SHOW_PLUGINS"			=> "Installed Plugi<em>n</em>s",
-"PLUGINS_NAV" 			=> "Plugins",
+"PLUGINS_INSTALLED" => "plugins installed",
+"SHOW_PLUGINS"			=> "Installed Plu<em>g</em>ins",
 "PLUGIN_NAME" 			=> "Name",
 "PLUGIN_DESC" 			=> "Description",
 "PLUGIN_VER" 				=> "Version",
 
 
+
+
 /***********************************************************************************
- * SINCE Version 2.02
+ * SINCE Version 3.0
 ***********************************************************************************/
 
+/* 
+ * For: setup.php
+ */
 
-"PERMALINK" => "Custom Permalink Structure",
-"MORE" => "more",
-"HELP" => "help",
+"ROOT_HTACCESS_ERROR" => "Failed to create .htaccess in root! Please copy <b>%s</b> to <b>.htaccess</b> and change <code>%s</code> to <code>%s</code>",
+"REMOVE_TEMPCONFIG_ERROR" => "Failed to remove <b>%s</b>! Please do it manually.",
+"MOVE_TEMPCONFIG_ERROR" => "Failed to rename <b>%s</b> to <b>%s</b>! Please do it manually.",
+"KILL_CANT_CONTINUE" => "Cannot continue. Please fix errors and try again.",
+"REFRESH" => "Refresh",
+"BETA"=> "Beta / Bleeding Edge",
 
+/*
+ * Misc Cleanup Work
+ */
+ 
+"HOMEPAGE_DELETE_ERROR" => "You cannot delete your homepage", //deletefile
+"NO_ZIPARCHIVE" => "ZipArchive extension is not installed. Unable to continue", //zip
+"REDIRECT_MSG"=> "If your browser does not redirect you, click <a href=\"%s\">here</a>", //basic
+"REDIRECT"=> "Redirect", //basic
+"DENIED"=> "Denied", //sitemap
+"DEBUG_MODE"=> "DEBUG MODE", //nav-include
+"DOUBLE_CLICK_EDIT"=> "Double Click to Edit", //components
+"THUMB_SAVED"=> "Thumbnail Saved", //image
+"EDIT_COMPONENTS"		=>	"Edit Components", //components
+"REQS_MORE_INFO"=> "For more information on the required modules, visit the <a href=\"%s\" target=\"_blank\" >requirements page</a>.", //install & health-check
+"SYSTEM_UPDATE" => "System Update", // update.php
+"AUTHOR" 				=> "Author", //plugins.php
+"ENABLE" 				=> "Enable", //plugins.php
+"DISABLE" 				=> "Disable", //plugins.php
+"NO_THEME_SCREENSHOT" => "No theme screenshot available", //theme.php
+"UNSAVED_INFORMATION" => "You are about to leave this page and will lose any unsaved information.", //edit.php
+"BACK_TO_WEBSITE" => "Back to Website", //index & resetpassword
+"SUPPORT_FORUM" => "Support Forum", //support.php
+"FILTER" => "Filter", //pages.php
+"UPLOADIFY_BUTTON" => "Upload files and/or images...", //upload.php
+"FILE_BROWSER" => "File Browser", //filebrowser.php
+"SELECT_FILE" => "Select file", //filebrowser.php
+"CREATE_FOLDER" => "Create Folder", //upload.php
+"THUMBNAIL" => "Thumbnail", //filebrowser.php
+"ERROR_FOLDER_EXISTS" => "The folder you are trying to create already exists", //upload.php
+"FOLDER_CREATED" => "The new folder was successfully created: <strong>%s</strong>", //upload.php
+"ERROR_CREATING_FOLDER" => "There was an error creating the new folder", //upload.php
+"DELETE_FOLDER" => "Delete Folder", //upload.php
+"FILE_NAME" => "File Name", //multiple tr header rows
+"FILE_SIZE" => "Size", //multiple tr header rows
+"ARCHIVE_DATE" => "Archive Date", //archive.php
+"CKEDITOR_LANG" => "en", // edit.php ; set CKEditor language, don't forget to include CKEditor language file in translation zip
 
-"" => "not translated"
+"X" => "not translated"
 
 
 
 );
-
-?>

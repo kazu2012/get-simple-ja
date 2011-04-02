@@ -1,33 +1,26 @@
 <?php 
-/****************************************************
-*
-* @File: 		health-check.php
-* @Package:	GetSimple
-* @Action:	Displays the log file passed to it 	
-*
-*****************************************************/
+/**
+ * Health Check
+ *
+ * Displays the status and health check of your installation	
+ *
+ * @package GetSimple
+ * @subpackage Support
+ */
 
 // Setup inclusions
 $load['plugin'] = true;
 
-// Relative
-$relative = '../';
-
 // Include common.php
 include('inc/common.php');
 login_cookie_check();
-	
-// Variable settings
-$ref = htmlentities($_SERVER['SERVER_NAME'], ENT_QUOTES);
-$data = @getXML(GSDATAOTHERPATH.'authorization.xml');
-$APIKEY = $data->apikey;
-login_cookie_check();
 $php_modules = get_loaded_extensions();
+
 ?>
 
-<?php get_template('header', cl($SITENAME).' &raquo; '.$i18n['SUPPORT'].' &raquo; '.$i18n['WEB_HEALTH_CHECK']); ?>
+<?php get_template('header', cl($SITENAME).' &raquo; '.i18n_r('SUPPORT').' &raquo; '.i18n_r('WEB_HEALTH_CHECK')); ?>
 	
-	<h1><a href="<?php echo $SITEURL; ?>" target="_blank" ><?php echo cl($SITENAME); ?></a> <span>&raquo;</span> <?php echo $i18n['SUPPORT'];?> <span>&raquo;</span> <?php echo $i18n['WEB_HEALTH_CHECK'];?></h1>
+	<h1><a href="<?php echo $SITEURL; ?>" target="_blank" ><?php echo cl($SITENAME); ?></a> <span>&raquo;</span> <?php i18n('SUPPORT');?> <span>&raquo;</span> <?php i18n('WEB_HEALTH_CHECK');?></h1>
 	<?php include('template/include-nav.php'); ?>
 	<?php include('template/error_checking.php'); ?>
 
@@ -35,310 +28,306 @@ $php_modules = get_loaded_extensions();
 	
 	<div id="maincontent">
 		<div class="main">
-			<h3><?php echo $site_full_name; ?> <?php echo $i18n['VERSION'];?></h3>
+			<h3><?php echo $site_full_name; ?> <?php i18n('VERSION');?></h3>
 			<table class="highlight healthcheck">
 				<?php
 				if (in_arrayi('curl', $php_modules))
 				{
-					$curl_URL = $api_url .'?k='.$APIKEY.'&v='.$site_version_no;
+					$curl_URL = $api_url .'?v='.$site_version_no;
 					$ch = curl_init();
 					curl_setopt($ch, CURLOPT_TIMEOUT, 2);
 					curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 					curl_setopt($ch, CURLOPT_URL, $curl_URL);
 					$data = curl_exec($ch);
 					curl_close($ch);
-					if ($data !== false)
-					{
+					if ($data !== false) {
 						$apikey = json_decode($data);
 						$verstatus = $apikey->status;
-					}
-					else
-					{
+					} else {
 						$apikey = null;
 						$verstatus = null;
 					}
-				} 
-				else 
-				{
+				} else {
 					$verstatus = '10';
 				}
 				
-				if ($verstatus == '0') 
-				{
-					$ver = '<span class="ERRmsg" >'. $i18n['UPG_NEEDED'].' <b>'.$apikey->latest .'</b><br /><a href="http://get-simple.info/download">'. $i18n['DOWNLOAD'].'</a></span>';
-				} 
-				elseif ($verstatus == '1') 
-				{
-					$ver = '<span class="OKmsg" ><b>'.$site_version_no.'</b> - '. $i18n['LATEST_VERSION'].'</span>';
-				} 
-				elseif ($verstatus == '2') 
-				{
-					$ver = '<span class="WARNmsg" ><b>'.$site_version_no.'</b> - Beta / Bleeding Edge</span>';
-				} 
-				else 
-				{
-					$ver = '<span class="WARNmsg" >'. $i18n['CANNOT_CHECK'].' <b>'.$site_version_no.'</b><br /><a href="http://get-simple.info/download">'. $i18n['DOWNLOAD'].'</a></span>';
+				if ($verstatus == '0') {
+					$ver = '<span class="ERRmsg" >'. i18n_r('UPG_NEEDED').' <b>'.$apikey->latest .'</b><br /><a href="http://get-simple.info/download/">'. i18n_r('DOWNLOAD').'</a></span>';
+				} elseif ($verstatus == '1') {
+					$ver = '<span class="OKmsg" ><b>'.$site_version_no.'</b> - '. i18n_r('LATEST_VERSION').'</span>';
+				} elseif ($verstatus == '2') {
+					$ver = '<span class="WARNmsg" ><b>'.$site_version_no.'</b> - '. i18n_r('BETA').'</span>';
+				} else {
+					$ver = '<span class="WARNmsg" >'. i18n_r('CANNOT_CHECK').' <b>'.$site_version_no.'</b><br /><a href="http://get-simple.info/download">'. i18n_r('DOWNLOAD').'</a></span>';
 				}
 				?>
-				<tr><td style="width:345px;" ><?php echo $site_full_name; ?> <?php echo $i18n['VERSION'];?></td><td><?php echo $ver; ?></td></tr>
+				<tr><td style="width:445px;" ><?php echo $site_full_name; ?> <?php i18n('VERSION');?></td><td><?php echo $ver; ?></td></tr>
 			</table>
 			
-			<h3><?php echo $i18n['SERVER_SETUP'];?></h3>
+			<h3><?php i18n('SERVER_SETUP');?></h3>
 			<table class="highlight healthcheck">
-				<tr><td style="width:345px;" >
+				<tr><td style="width:445px;" >
 				<?php
-					if (version_compare(phpversion(), "5.1.3", "<")) {
-						echo 'PHP '.$i18n['VERSION'].'</td><td><span class="ERRmsg" ><b>'. phpversion().'</b> - PHP 5.1.3 '.$i18n['OR_GREATER_REQ'].' - '.$i18n['ERROR'].'</span></td></tr>';
+					if (version_compare(PHP_VERSION, "5.2", "<")) {
+						echo 'PHP '.i18n_r('VERSION').'</td><td><span class="ERRmsg" ><b>'. PHP_VERSION.'</b> - PHP 5.2 '.i18n_r('OR_GREATER_REQ').' - '.i18n_r('ERROR').'</span></td></tr>';
 					} else {
-						echo 'PHP '.$i18n['VERSION'].'</td><td><span class="OKmsg" ><b>'. phpversion().'</b> - '.$i18n['OK'].'</span></td></tr>';
+						echo 'PHP '.i18n_r('VERSION').'</td><td><span class="OKmsg" ><b>'. PHP_VERSION.'</b> - '.i18n_r('OK').'</span></td></tr>';
 					}
 
 					if  (in_arrayi('curl', $php_modules) ) {
-						echo '<tr><td>cURL Module</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
+						echo '<tr><td>cURL Module</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
 					} else{
-						echo '<tr><td>cURL Module</td><td><span class="WARNmsg" >'.$i18n['NOT_INSTALLED'].' - '.$i18n['WARNING'].'</span></td></tr>';
+						echo '<tr><td>cURL Module</td><td><span class="WARNmsg" >'.i18n_r('NOT_INSTALLED').' - '.i18n_r('WARNING').'</span></td></tr>';
 					}
 					if  (in_arrayi('gd', $php_modules) ) {
-						echo '<tr><td>GD Library</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
+						echo '<tr><td>GD Library</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
 					} else{
-						echo '<tr><td>GD Library</td><td><span class="WARNmsg" >'.$i18n['NOT_INSTALLED'].' - '.$i18n['WARNING'].'</span></td></tr>';
+						echo '<tr><td>GD Library</td><td><span class="WARNmsg" >'.i18n_r('NOT_INSTALLED').' - '.i18n_r('WARNING').'</span></td></tr>';
+					}
+					if  (in_arrayi('zip', $php_modules) ) {
+						echo '<tr><td>ZipArchive</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
+					} else{
+						echo '<tr><td>ZipArchive</td><td><span class="WARNmsg" >'.i18n_r('NOT_INSTALLED').' - '.i18n_r('WARNING').'</span></td></tr>';
 					}
 					if (! in_arrayi('SimpleXML', $php_modules) ) {
-						echo '<tr><td>SimpleXML Module</td><td><span class="ERRmsg" >'.$i18n['NOT_INSTALLED'].' - '.$i18n['ERROR'].'</span></td></tr>';
+						echo '<tr><td>SimpleXML Module</td><td><span class="ERRmsg" >'.i18n_r('NOT_INSTALLED').' - '.i18n_r('ERROR').'</span></td></tr>';
 					} else {
-						echo '<tr><td>SimpleXML Module</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
-					}
-					
-					if (! function_exists('date_default_timezone_set') ) {
-						echo '<tr><td>Default Timezone Function</td><td><span class="WARNmsg" >'.$i18n['NOT_INSTALLED'].' - '.$i18n['WARNING'].'</span></td></tr>';
-					} else {
-						echo '<tr><td>Default Timezone Function</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
+						echo '<tr><td>SimpleXML Module</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
 					}
 
 					if ( function_exists('apache_get_modules') ) {
 						if(! in_arrayi('mod_rewrite',apache_get_modules())) {
-							echo '<tr><td>Apache Mod Rewrite</td><td><span class="WARNmsg" >'.$i18n['NOT_INSTALLED'].' - '.$i18n['WARNING'].'</span></td></tr>';
+							echo '<tr><td>Apache Mod Rewrite</td><td><span class="WARNmsg" >'.i18n_r('NOT_INSTALLED').' - '.i18n_r('WARNING').'</span></td></tr>';
 						} else {
-							echo '<tr><td>Apache Mod Rewrite</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
+							echo '<tr><td>Apache Mod Rewrite</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
 						}
 					} else {
-						echo '<tr><td>Apache Mod Rewrite</td><td><span class="OKmsg" >'.$i18n['INSTALLED'].' - '.$i18n['OK'].'</span></td></tr>';
+						echo '<tr><td>Apache Mod Rewrite</td><td><span class="OKmsg" >'.i18n_r('INSTALLED').' - '.i18n_r('OK').'</span></td></tr>';
 					}
 
 	?>
 			</table>
+			<p class="hint"><?php echo sprintf(i18n_r('REQS_MORE_INFO'), "http://get-simple.info/wiki/installation:requirements"); ?></p>
 			
-			<h3><?php echo $i18n['DATA_FILE_CHECK'];?></h3>
+			<h3><?php i18n('DATA_FILE_CHECK');?></h3>
 			<table class="highlight healthcheck">
 				<?php 
-						$base_path = '../data/';
-						$path = $base_path .'pages';
+						$path = GSDATAPAGESPATH;
 						$data = getFiles($path);
 						sort($data);
 						foreach($data as $file) {
 							if( isFile($file, $path) ) {
-								echo '<tr><td style="width:345px;" >'. tsl($path) . $file .'</td><td>' . @valid_xml(tsl($path) . $file) .'</td></tr>';
+								echo '<tr><td style="width:445px;" >/data/pages/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
 							}							
 						}
 
-						$base_path = '../data/';
-						$path = $base_path .'other';
+						$path = GSDATAOTHERPATH;
 						$data = getFiles($path);
 						sort($data);
 						foreach($data as $file) {
 							if( isFile($file, $path) ) {
-								echo '<tr><td>'. tsl($path) . $file .'</td><td>' . @valid_xml(tsl($path) . $file) .'</td></tr>';
+								echo '<tr><td>/data/other/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
 							}							
 						}
 
-						$base_path = '../data/';
-						$path = $base_path .'other/logs';
+						$path = GSDATAOTHERPATH.'logs/';
 						$data = getFiles($path);
 						sort($data);
 						foreach($data as $file) {
 							if( isFile($file, $path, '.log') ) {
-								echo '<tr><td>'. tsl($path) . $file .'</td><td>' . @valid_xml(tsl($path) . $file) .'</td></tr>';
+								echo '<tr><td>/data/other/logs/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
 							}							
 						}
 
-						$path = '../backups/other';
+						$path = GSBACKUPSPATH.'other/';
 						$data = getFiles($path);
 						sort($data);
 						foreach($data as $file) {
 							if( isFile($file, $path) ) {
-								echo '<tr><td>'. tsl($path) . $file .'</td><td>' . @valid_xml(tsl($path) . $file) .'</td></tr>';
+								echo '<tr><td>/backups/other/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
 							}							
 						}
-
-						$path = '../backups/pages';
+						
+						$path = GSBACKUPSPATH.'users/';
 						$data = getFiles($path);
 						sort($data);
 						foreach($data as $file) {
 							if( isFile($file, $path) ) {
-								echo '<tr><td>'. tsl($path) . $file .'</td><td>' . @valid_xml(tsl($path) . $file) .'</td></tr>';
+								echo '<tr><td>/backups/users/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
+							}							
+						}
+
+						$path = GSBACKUPSPATH.'pages/';
+						$data = getFiles($path);
+						sort($data);
+						foreach($data as $file) {
+							if( isFile($file, $path) ) {
+								echo '<tr><td>/backups/pages/' . $file .'</td><td>' . valid_xml($path . $file) .'</td></tr>';
 							}							
 						}
 				?>
 			</table>
 			
-			<h3><?php echo $i18n['DIR_PERMISSIONS'];?></h3>
+			<h3><?php i18n('DIR_PERMISSIONS');?></h3>
 			<table class="highlight healthcheck">
-				<tr><td style="width:345px;" >../data/pages/</td><td><?php if( check_perms("../data/pages/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../data/pages/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../data/pages/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../data/other/</td><td><?php if( check_perms("../data/other/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../data/other/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../data/other/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../data/other/logs/</td><td><?php if( check_perms("../data/other/logs/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../data/other/logs/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../data/other/logs/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../data/thumbs/</td><td><?php if( check_perms("../data/thumbs/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../data/thumbs/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../data/thumbs/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../data/uploads/</td><td><?php if( check_perms("../data/uploads/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../data/uploads/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../data/uploads/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../backups/zip/</td><td><?php if( check_perms("../backups/zip/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../backups/zip/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../backups/zip/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../backups/pages/</td><td><?php if( check_perms("../backups/pages/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../backups/pages/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../backups/pages/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
-				<tr><td>../backups/other/</td><td><?php if( check_perms("../backups/other/") >= '0755' ) { echo '<span class="OKmsg" >'. check_perms("../backups/other/") .' '.$i18n['WRITABLE'].' - '.$i18n['OK'].'</span>'; } else { echo '<span class="ERRmsg" >'. check_perms("../backups/other/") .' '.$i18n['NOT_WRITABLE'].' - '.$i18n['ERROR'].'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSDATAPAGESPATH); ?><tr><td style="width:445px;" >/data/pages/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSDATAOTHERPATH); ?><tr><td>/data/other/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSDATAOTHERPATH.'logs/'); ?><tr><td>/data/other/logs/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSTHUMBNAILPATH); ?><tr><td>/data/thumbs/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSDATAUPLOADPATH); ?><tr><td>/data/uploads/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSUSERSPATH); ?><tr><td>/data/users/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSBACKUPSPATH.'zip/'); ?><tr><td>/backups/zip/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSBACKUPSPATH.'pages/'); ?><tr><td>/backups/pages/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSBACKUPSPATH.'other/'); ?><tr><td>/backups/other/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
+				<?php $me = check_perms(GSBACKUSERSPATH); ?><tr><td>/backups/users/</td><td><?php if( $me >= '0755' ) { echo '<span class="OKmsg" >'. $me .' '.i18n_r('WRITABLE').' - '.i18n_r('OK').'</span>'; } else { echo '<span class="ERRmsg" >'. $me .' '.i18n_r('NOT_WRITABLE').' - '.i18n_r('ERROR').'!</span>'; } ?></td></tr>
 			</table>
 
 			
-			<h3><?php echo sprintf($i18n['EXISTANCE'], '.htaccess');?></h3>
+			<h3><?php echo sprintf(i18n_r('EXISTANCE'), '.htaccess');?></h3>
 			<table class="highlight healthcheck">
-				<tr><td style="width:345px;" >../data/</td><td> 
+				<tr><td style="width:445px;" >/data/</td><td> 
 				<?php	
-					$file = "../data/.htaccess";
+					$file = GSDATAPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.deny.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.deny.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo '<span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo '<span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Deny from all')) {
-							echo '<span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo '<span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo '<span class="OKmsg" >'.$i18n['GOOD_D_FILE'].' - '.$i18n['OK'].'</span>';
+							echo '<span class="OKmsg" >'.i18n_r('GOOD_D_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 			</td></tr>
 
-				<tr><td>../data/uploads/</td><td>
+				<tr><td>/data/uploads/</td><td>
 				<?php	
-					$file = "../data/uploads/.htaccess";
+					$file = GSDATAUPLOADPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.allow.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.allow.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Allow from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_A_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_A_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 				
-				<tr><td>../data/thumbs/</td><td> 
+				<tr><td>/data/thumbs/</td><td> 
 				<?php	
-					$file = "../data/thumbs/.htaccess";
+					$file = GSTHUMBNAILPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.allow.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.allow.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Allow from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_A_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_A_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 				
-				<tr><td>../data/pages/</td><td>
+				<tr><td>/data/pages/</td><td>
 				<?php	
-					$file = "../data/pages/.htaccess";
+					$file = GSDATAPAGESPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.deny.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.deny.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Deny from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_D_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_D_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 				
-				<tr><td>../plugins/</td><td>
+				<tr><td>/plugins/</td><td>
 				<?php	
-					$file = "../plugins/.htaccess";
+					$file = GSPLUGINPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.deny.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.deny.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Deny from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_D_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_D_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 				
-				<tr><td>../data/other/</td><td> 
+				<tr><td>/data/other/</td><td> 
 				<?php	
-					$file = "../data/other/.htaccess";
+					$file = GSDATAOTHERPATH.".htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.deny.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.deny.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Deny from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_D_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_D_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 
-				<tr><td>../data/other/logs/</td><td>
+				<tr><td>/data/other/logs/</td><td>
 				<?php	
-					$file = "../data/other/logs/.htaccess";
+					$file = GSDATAOTHERPATH."logs/.htaccess";
 					if (! file_exists($file)) {
-						copy ('inc/tmp/tmp.deny.htaccess', $file);
+						copy (GSADMININCPATH.'tmp/tmp.deny.htaccess', $file);
 					} 
 					if (! file_exists($file)) {
-						echo ' <span class="WARNmsg" >'.$i18n['MISSING_FILE'].' - '.$i18n['WARNING'].'</span>';
+						echo ' <span class="WARNmsg" >'.i18n_r('MISSING_FILE').' - '.i18n_r('WARNING').'</span>';
 					} else {
-						$res = @file_get_contents($file);
+						$res = file_get_contents($file);
 						if ( !strstr($res, 'Deny from all')) {
-							echo ' <span class="WARNmsg" >'.$i18n['BAD_FILE'].' - '.$i18n['WARNING'].'</span>';
+							echo ' <span class="WARNmsg" >'.i18n_r('BAD_FILE').' - '.i18n_r('WARNING').'</span>';
 						} else {
-							echo ' <span class="OKmsg" >'.$i18n['GOOD_D_FILE'].' - '.$i18n['OK'].'</span>';
+							echo ' <span class="OKmsg" >'.i18n_r('GOOD_D_FILE').' - '.i18n_r('OK').'</span>';
 						}
 					}
 				?>
 				</td></tr>
 				
-				<tr><td>../theme/</td><td>
+				<tr><td>/theme/</td><td>
 				<?php	
-					$file = "../theme/.htaccess";
+					$file = GSTHEMESPATH.".htaccess";
 					if (file_exists($file)) {
 						unlink($file);
 					} 
 					if (file_exists($file)) {
-						echo ' <span class="ERRmsg" >'.$i18n['CANNOT_DEL_FILE'].' - '.$i18n['ERROR'].'</span>';
+						echo ' <span class="ERRmsg" >'.i18n_r('CANNOT_DEL_FILE').' - '.i18n_r('ERROR').'</span>';
 					} else {
-						echo ' <span class="OKmsg" >'.$i18n['NO_FILE'].' - '.$i18n['OK'].'</span>';
+						echo ' <span class="OKmsg" >'.i18n_r('NO_FILE').' - '.i18n_r('OK').'</span>';
 					}
 				?>
 				</td></tr>

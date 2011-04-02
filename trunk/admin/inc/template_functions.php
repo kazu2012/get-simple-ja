@@ -1,18 +1,23 @@
 <?php if(!defined('IN_GS')){ die('you cannot load this page directly.'); }
-/****************************************************
-*
-* @File: 	template_functions.php
-* @Package:	GetSimple
-* @Action:	Functions used to help create the cp pages	
-*
-*****************************************************/
-	
-	
-/*******************************************************
- * @function get_template
- * @param $name - name of template
+/**
+ * Template Functions
  *
-*/
+ * These functions are used within the back-end of a GetSimple installation
+ *
+ * @package GetSimple
+ * @subpackage Zip
+ */ 
+	
+	
+/**
+ * Get Template
+ *
+ * @since 1.0
+ *
+ * @param string $name Name of template file to get
+ * @param string $title Title to place on page
+ * @return string
+ */
 function get_template($name, $title='** Change Me - Default Page Title **') {
 	ob_start();
 	$file = "template/" . $name . ".php";
@@ -21,112 +26,131 @@ function get_template($name, $title='** Change Me - Default Page Title **') {
 	ob_end_clean(); 
 	echo $template;
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function filename_id
- * @returns returns the basename of the admin page in id=""
+/**
+ * Filename ID
  *
-*/
+ * Generates HTML code to place on the body tag of a page
+ *
+ * @since 1.0
+ * @uses myself
+ *
+ * @return string
+ */
 function filename_id() {
-	$path = htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES);
+	$path = myself(FALSE);
 	$file = basename($path,".php");	
 	echo "id=\"". $file ."\"";	
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function get_filename_id
- * @returns returns the basename of the admin page
+/**
+ * Get Filename ID
  *
-*/
+ * Returns the filename of the current file, minus .php
+ *
+ * @since 1.0
+ * @uses myself
+ *
+ * @return string
+ */
 function get_filename_id() {
-	$path = htmlentities($_SERVER['PHP_SELF'], ENT_QUOTES);
+	$path = myself(FALSE);
 	$file = basename($path,".php");	
 	return $file;	
 }
-/******************************************************/
 
-
-
-
-
-/*******************************************************
- * @function delete_file
- * @param $id - page to delete
+/**
+ * Delete Pages File
  *
-*/
+ * Generates HTML code to place on the body tag of a page
+ *
+ * @since 1.0
+ * @uses GSBACKUPSPATH
+ * @uses GSDATAPAGESPATH
+ *
+ * @param string $id File ID to delete
+ */
 function delete_file($id) {
 	$bakfile = GSBACKUPSPATH."pages/". $id .".bak.xml";
 	$file = GSDATAPAGESPATH . $id .".xml";
 	copy($file, $bakfile);
 	unlink($file);
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function check_perms
- * @param $path - path to get file permissions for
+/**
+ * Check Permissions
  *
-*/
+ * Returns the CHMOD value of a particular file or path
+ *
+ * @since 2.0
+ *
+ * @param string $path File and/or path
+ */
 function check_perms($path) { 
   clearstatcache(); 
   $configmod = substr(sprintf('%o', fileperms($path)), -4);  
 	return $configmod;
 } 
-/******************************************************/
 
-
-/*******************************************************
- * @function delete_zip
- * @param $id - zip to delete
+/**
+ * Delete Zip File
  *
-*/
+ * @since 1.0
+ * @uses GSBACKUPSPATH
+ *
+ * @param string $id Zip filename to delete
+ * @return string
+ */
 function delete_zip($id) { 
 	unlink(GSBACKUPSPATH."zip/". $id);
 	return 'success';
 } 
-/******************************************************/
 
-
-/*******************************************************
- * @function delete_upload
- * @param $id - upload file to delete
+/**
+ * Delete Uploaded File
  *
-*/
-function delete_upload($id) { 
-	unlink(GSDATAUPLOADPATH . $id);
-	if (file_exists(GSTHUMBNAILPATH."thumbnail.". $id)) {
-		unlink(GSTHUMBNAILPATH."thumbnail.". $id);
+ * @since 1.0
+ * @uses GSTHUMBNAILPATH
+ * @uses GSDATAUPLOADPATH
+ *
+ * @param string $id Uploaded filename to delete
+ * @param string $path Path to uploaded file folder
+ * @return string
+ */
+function delete_upload($id, $path = "") { 
+	unlink(GSDATAUPLOADPATH . $path . $id);
+	if (file_exists(GSTHUMBNAILPATH.$path."thumbnail.". $id)) {
+		unlink(GSTHUMBNAILPATH.$path."thumbnail.". $id);
 	}
-	if (file_exists(GSTHUMBNAILPATH."thumbsm.". $id)) {
-		unlink(GSTHUMBNAILPATH."thumbsm.". $id);
+	if (file_exists(GSTHUMBNAILPATH.$path."thumbsm.". $id)) {
+		unlink(GSTHUMBNAILPATH.$path."thumbsm.". $id);
 	}
 	return 'success';
 } 
-/******************************************************/
 
-
-/*******************************************************
- * @function delete_bak
- * @param $id - page backup to delete
+/**
+ * Delete Pages Backup File
  *
-*/
+ * @since 1.0
+ * @uses GSBACKUPSPATH
+ *
+ * @param string $id File ID to delete
+ * @return string
+ */
 function delete_bak($id) { 
 	unlink(GSBACKUPSPATH."pages/". $id .".bak.xml");
 	return 'success';
 } 
-/******************************************************/
 
-
-/*******************************************************
- * @function restore_bak
- * @param $id - page backup to restore to
+/**
+ * Restore Pages Backup File
  *
-*/
+ * @since 1.0
+ * @uses GSBACKUPSPATH
+ * @uses GSDATAPAGESPATH
+ *
+ * @param string $id File ID to restore
+ */
 function restore_bak($id) { 
 	$file = GSBACKUPSPATH."pages/". $id .".bak.xml";
 	$newfile = GSDATAPAGESPATH . $id .".xml";
@@ -141,14 +165,14 @@ function restore_bak($id) {
 		unlink($tmpfile);
 	}
 } 
-/******************************************************/
 
-
-/*******************************************************
- * @function createRandomPassword
- * @returns random 6 character password
+/**
+ * Create Random Password
  *
-*/
+ * @since 1.0
+ *
+ * @return string
+ */
 function createRandomPassword() {
     $chars = "Ayz23mFGHBxPQefgnopRScdqrTU4CXYZabstuDEhijkIJKMNVWvw56789";
     srand((double)microtime()*1000000);
@@ -162,51 +186,55 @@ function createRandomPassword() {
     }
     return $pass;
 }
-/******************************************************/
 
-
-
-/*******************************************************
- * @function get_FileType
- * @param $ext - extension of the file
- * @returns file type
+/**
+ * File Type Category
  *
-*/
+ * Returns the category of an file based on it's extension
+ *
+ * @since 1.0
+ * @uses i18n_r
+ *
+ * @param string $ext
+ * @return string
+ */
 function get_FileType($ext) {
-	global $i18n;
-	$ext = strtolower($ext);
+
+	$ext = lowercase($ext);
 	if ($ext == 'jpg' || $ext == 'jpeg' || $ext == 'pct' || $ext == 'gif' || $ext == 'bmp' || $ext == 'png' ) {
-		return $i18n['IMAGES'];
+		return i18n_r('IMAGES') .' Images';
 	} elseif ( $ext == 'zip' || $ext == 'gz' || $ext == 'rar' || $ext == 'tar' || $ext == 'z' || $ext == '7z' || $ext == 'pkg' ) {
-		return $i18n['FTYPE_COMPRESSED'];
+		return i18n_r('FTYPE_COMPRESSED');
 	} elseif ( $ext == 'ai' || $ext == 'psd' || $ext == 'eps' || $ext == 'dwg' || $ext == 'tif' || $ext == 'tiff' || $ext == 'svg' ) {
-		return $i18n['FTYPE_VECTOR'];
+		return i18n_r('FTYPE_VECTOR');
 	} elseif ( $ext == 'swf' || $ext == 'fla' ) {
-		return $i18n['FTYPE_FLASH'];	
+		return i18n_r('FTYPE_FLASH');	
 	} elseif ( $ext == 'mov' || $ext == 'mpg' || $ext == 'avi' || $ext == 'mpeg' || $ext == 'rm' || $ext == 'wmv' ) {
-		return $i18n['FTYPE_VIDEO'];
+		return i18n_r('FTYPE_VIDEO');
 	} elseif ( $ext == 'mp3' || $ext == 'wav' || $ext == 'wma' || $ext == 'midi' || $ext == 'mid' || $ext == 'm3u' || $ext == 'ra' || $ext == 'aif' ) {
-		return $i18n['FTYPE_AUDIO'];
+		return i18n_r('FTYPE_AUDIO');
 	} elseif ( $ext == 'php' || $ext == 'phps' || $ext == 'asp' || $ext == 'xml' || $ext == 'js' || $ext == 'jsp' || $ext == 'sql' || $ext == 'css' || $ext == 'htm' || $ext == 'html' || $ext == 'xhtml' || $ext == 'shtml' ) {
-		return $i18n['FTYPE_WEB'];
+		return i18n_r('FTYPE_WEB');
 	} elseif ( $ext == 'mdb' || $ext == 'accdb' || $ext == 'pdf' || $ext == 'xls' || $ext == 'xlsx' || $ext == 'csv' || $ext == 'tsv' || $ext == 'ppt' || $ext == 'pps' || $ext == 'pptx' || $ext == 'txt' || $ext == 'log' || $ext == 'dat' || $ext == 'text' || $ext == 'doc' || $ext == 'docx' || $ext == 'rtf' || $ext == 'wks' ) {
-		return $i18n['FTYPE_DOCUMENTS'];
+		return i18n_r('FTYPE_DOCUMENTS');
 	} elseif ( $ext == 'exe' || $ext == 'msi' || $ext == 'bat' || $ext == 'download' || $ext == 'dll' || $ext == 'ini' || $ext == 'cab' || $ext == 'cfg' || $ext == 'reg' || $ext == 'cmd' || $ext == 'sys' ) {
-		return $i18n['FTYPE_SYSTEM'];
+		return i18n_r('FTYPE_SYSTEM');
 	} else {
-		return $i18n['FTYPE_MISC'];
+		return i18n_r('FTYPE_MISC');
 	}
 }
-/******************************************************/
 
-
-
-/*******************************************************
- * @function createBak
- * @param $file - file to backup
- * @param $filepath - path to backup file at
+/**
+ * Create Backup Pages File
  *
-*/
+ * @since 1.0
+ * @uses tsl
+ *
+ * @param string $file
+ * @param string $filepath
+ * @param string $bakpath
+ * @return bool
+ */
 function createBak($file, $filepath, $bakpath) {
 	$bakfile = '';
 	if ( file_exists(tsl($filepath) . $file) ) {
@@ -220,17 +248,15 @@ function createBak($file, $filepath, $bakpath) {
 		return false;
 	} 
 }
-/******************************************************/
 
-
-
-
-/*******************************************************
- * @function makeIso8601TimeStamp
- * @param $dateTime - date to create iso timestamp from
- * @returns - iso timestamp
+/**
+ * ISO Timestamp
  *
-*/
+ * @since 1.0
+ *
+ * @param string $dateTime
+ * @return string
+ */
 function makeIso8601TimeStamp($dateTime) {
     if (!$dateTime) {
         $dateTime = date('Y-m-d H:i:s');
@@ -242,15 +268,15 @@ function makeIso8601TimeStamp($dateTime) {
     }
     return $isoTS;
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function pingGoogleSitemaps
- * @param $url_xml - xml file to ping to Google
- * @returns - status
+/**
+ * Ping Sitemaps
  *
-*/
+ * @since 1.0
+ *
+ * @param string $url_xml XML sitemap
+ * @return bool
+ */
 function pingGoogleSitemaps($url_xml) {
    $status = 0;
    $google = 'www.google.com';
@@ -327,16 +353,18 @@ function pingGoogleSitemaps($url_xml) {
    
    return( $status );
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function undo
- * @param $file - filename to undo changes to
- * @param $filepath - file location
- * @param $bakpath - backup file location
+/**
+ * Undo
  *
-*/
+ * @since 1.0
+ * @uses tsl
+ *
+ * @param string $file
+ * @param string $filepath
+ * @param string $bakpath
+ * @return bool
+ */
 function undo($file, $filepath, $bakpath) {
 	$old_file = $filepath . $file;
 	$new_file = tsl($bakpath) . $file .".bak";
@@ -352,69 +380,75 @@ function undo($file, $filepath, $bakpath) {
 		return true;
 	}
 }
-/******************************************************/
 
-
-
-/*******************************************************
- * @function fSize
- * @param $s - filesize
- * @returns formated file size
+/**
+ * File Size
  *
-*/
+ * @since 1.0
+ *
+ * @param string $s 
+ * @return string
+ */
 function fSize($s) {
-	$size = '<b>'. ceil(round(($s / 1024), 1)) .'</b> KB'; // in kb
+	$size = '<span>'. ceil(round(($s / 1024), 1)) .'</span> KB'; // in kb
 	if ($s >= "1000000") {
-		$size = '<b>'. round(($s / 1048576), 1) .'</b> MB'; // in mb
+		$size = '<span>'. round(($s / 1048576), 1) .'</span> MB'; // in mb
 	}
 	if ($s <= "999") {
-		$size = '<b>< 1</b> KB'; // in kb
+		$size = '<span>&lt; 1</span> KB'; // in kb
 	}
 	
 	return $size;
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function check_email_address
- * @param $email - email address to check
- * @returns true or false validation check
+/**
+ * Validate Email Address
  *
-*/
+ * @since 1.0
+ *
+ * @param string $email 
+ * @return bool
+ */
 function check_email_address($email) {
-    if (!preg_match("/[^@]{1,64}@[^@]{1,255}$/", $email)) {
-        return false;
-    }
-    $email_array = explode("@", $email);
-    $local_array = explode(".", $email_array[0]);
-    for ($i = 0; $i < sizeof($local_array); $i++) {
-        if (!preg_match("/(([A-Za-z0-9!#$%&'*+\/\=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/\=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i])) {
-            return false;
-        }
-    }
-    if (!preg_match("/\[?[0-9\.]+\]?$/", $email_array[1])) {
-        $domain_array = explode(".", $email_array[1]);
-        if (sizeof($domain_array) < 2) {
-            return false; // Not enough parts to domain
-        }
-        for ($i = 0; $i < sizeof($domain_array); $i++) {
-            if (!preg_match("/(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$/", $domain_array[$i])) {
-                return false;
-            }
-        }
-    }
-    return true;
+    if (function_exists('filter_var')) {
+    	// PHP 5.2 or higher
+    	return (!filter_var((string)$email,FILTER_VALIDATE_EMAIL)) ? false: true;
+    } else {
+    	// old way
+	    if (!preg_match("/[^@]{1,64}@[^@]{1,255}$/", $email)) {
+	        return false;
+	    }
+	    $email_array = explode("@", $email);
+	    $local_array = explode(".", $email_array[0]);
+	    for ($i = 0; $i < sizeof($local_array); $i++) {
+	        if (!preg_match("/(([A-Za-z0-9!#$%&'*+\/\=?^_`{|}~-][A-Za-z0-9!#$%&'*+\/\=?^_`{|}~\.-]{0,63})|(\"[^(\\|\")]{0,62}\"))$/", $local_array[$i])) {
+	            return false;
+	        }
+	    }
+	    if (!preg_match("/\[?[0-9\.]+\]?$/", $email_array[1])) {
+	        $domain_array = explode(".", $email_array[1]);
+	        if (sizeof($domain_array) < 2) {
+	            return false; // Not enough parts to domain
+	        }
+	        for ($i = 0; $i < sizeof($domain_array); $i++) {
+	            if (!preg_match("/(([A-Za-z0-9][A-Za-z0-9-]{0,61}[A-Za-z0-9])|([A-Za-z0-9]+))$/", $domain_array[$i])) {
+	                return false;
+	            }
+	        }
+	    }
+	    return true;
+	  }
 }
 
-
-/*******************************************************
- * @function do_reg
- * @param $text - text to check
- * @param $regrex - regrex to check with
- * @returns true or false validation check
+/**
+ * Do Regex
  *
-*/
+ * @since 1.0
+ *
+ * @param string $text Text to perform regex on
+ * @param string $regex Regex format to use
+ * @return bool
+ */
 function do_reg($text, $regex) {
 	if (preg_match($regex, $text)) {
 		return true;
@@ -422,116 +456,101 @@ function do_reg($text, $regex) {
 		return false;
 	}
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function valid_xml
- * @param $file - file to validate
- * @returns true or false validation check
+/**
+ * Validate XML
  *
-*/
+ * @since 1.0
+ * @uses i18n_r
+ * @uses getXML
+ *
+ * @param string $file File to validate
+ * @return string
+ */
 function valid_xml($file) {
-	$xmlv = @getXML($file);
+	$xmlv = getXML($file);
 	global $i18n;
 	if ($xmlv) {
-		return '<span class="OKmsg" >XML Valid - '.$i18n['OK'].'</span>';
+		return '<span class="OKmsg" >XML Valid - '.i18n_r('OK').'</span>';
 	} else {
-		return '<span class="ERRmsg" >XML Invalid - '.$i18n['ERROR'].'!</span>';
+		return '<span class="ERRmsg" >XML Invalid - '.i18n_r('ERROR').'!</span>';
 	}
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function is_ignore_word
- * @param $word - file to validate
- * @returns true if word should be ignored
+/**
+ * Generate Salt
  *
-*/
-function is_ignore_word($word) {
-$stopwords = array("a","about","above","above","across","after","afterwards","again","against","all","almost","alone","along","already","also","although","always","am","among","amongst","amoungst","amount","an","and","another","any","anyhow","anyone","anything","anyway","anywhere","are","around","as",  "at","back","be","became","because","become","becomes","becoming","been","before","beforehand","behind","being","below","beside","besides","between","beyond","bill","both","bottom","but","by","call","can","cannot","cant","co","con","could","couldnt","cry","de","describe","detail","do","done","down","due","during","each","eg","eight","either","eleven","else","elsewhere","empty","enough","etc","even","ever","every","everyone","everything","everywhere","except","few","fifteen","fify","fill","find","fire","first","five","for","former","formerly","forty","found","four","from","front","full","further","get","give","go","had","has","hasnt","have","he","hence","her","here","hereafter","hereby","herein","hereupon","hers","herself","him","himself","his","how","however","hundred","ie","if","in","inc","indeed","interest","into","is","it","its","itself","keep","last","latter","latterly","least","less","ltd","made","many","may","me","meanwhile","might","mill","mine","more","moreover","most","mostly","move","much","must","my","myself","name","namely","neither","never","nevertheless","next","nine","no","nobody","none","noone","nor","not","nothing","now","nowhere","of","off","often","on","once","one","only","onto","or","other","others","otherwise","our","ours","ourselves","out","over","own","part","per","perhaps","please","put","rather","re","same","see","seem","seemed","seeming","seems","serious","several","she","should","show","side","since","sincere","six","sixty","so","some","somehow","someone","something","sometime","sometimes","somewhere","still","such","system","take","ten","than","that","the","their","them","themselves","then","thence","there","thereafter","thereby","therefore","therein","thereupon","these","they","thickv","thin","third","this","those","though","three","through","throughout","thru","thus","to","together","too","top","toward","towards","twelve","twenty","two","un","under","until","up","upon","us","very","via","was","we","well","were","what","whatever","when","whence","whenever","where","whereafter","whereas","whereby","wherein","whereupon","wherever","whether","which","while","whither","who","whoever","whole","whom","whose","why","will","with","within","without","would","yet","you","your","yours","yourself","yourselves","the");	
-if (in_array(strtolower($word), $stopwords)) {
-		return true;
-	} else {
-		return false;	
-	}
-}
-/******************************************************/
-
-
-/*******************************************************
- * @function generate_salt
- * @returns new salt value
+ * Returns a new unique salt
+ * @updated 3.0
  *
-*/
+ * @return string
+ */
 function generate_salt() {
-	
-	global $api_url;
-	global $site_version_no;
-	
-	$curl_URL = $api_url .'?r=true&v='.$site_version_no;
-	$ch = curl_init();
-	curl_setopt($ch, CURLOPT_TIMEOUT, 2);
-	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-	curl_setopt($ch, CURLOPT_URL, $curl_URL);
-	$datac = curl_exec($ch);
-	curl_close($ch);
-	$apikey = json_decode($datac);
-	return $apikey;
+	return substr(sha1(mt_rand()),0,22);
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function get_admin_path
- * @returns path to admin folder
+/**
+ * Get Admin Path
  *
-*/
+ * Gets the path of the admin directory
+ *
+ * @since 1.0
+ * @uses $GSADMIN
+ * @uses GSROOTPATH
+ * @uses tsl
+ *
+ * @return string
+ */
 function get_admin_path() {
-	$path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-	$segments = explode(DIRECTORY_SEPARATOR, $path);
-	$cut = array_keys($segments,'admin');
-	rsort($cut);
-	$new_segments = array_slice($segments, 0, $cut[0]+1);
-	return implode('/', $new_segments) . '/';
+	global $GSADMIN;
+	return tsl(GSROOTPATH . $GSADMIN);
 }
-/******************************************************/
 
-
-/*******************************************************
- * @function get_root_path
- * @return path to root install folder
+/**
+ * Get Root Install Path
  *
-*/
+ * Gets the path of the root installation directory
+ *
+ * @since 1.0
+ *
+ * @return string
+ */
 function get_root_path() {
-	$path = dirname(__FILE__) . DIRECTORY_SEPARATOR;
-	$segments = explode(DIRECTORY_SEPARATOR, $path);
-	$cut = array_keys($segments,'admin');
-	rsort($cut);
-	$new_segments = array_slice($segments, 0, $cut[0]);
-	return implode('/', $new_segments) . '/';
+  $pos = strrpos(dirname(__FILE__),DIRECTORY_SEPARATOR.'inc');
+  $adm = substr(dirname(__FILE__), 0, $pos);
+  $pos2 = strrpos($adm,DIRECTORY_SEPARATOR);
+  return tsl(substr(__FILE__, 0, $pos2));
 }
-/******************************************************/
 
 
-/*******************************************************
- * @function check_menu
- * @param $text - text to check
- * @return echos class='current' if current filename==$txt
+
+/**
+ * Check Current Menu
  *
-*/
+ * Checks to see if a menu item matches the current page
+ *
+ * @since 1.0
+ *
+ * @param string $text
+ * @return string
+ */
 function check_menu($text) {
 	if(get_filename_id()===$text){
 		echo 'class="current"';
 	}
 }
 
-/*******************************************************
- * @function passhash
- * @returns returns a hashed password
+/**
+ * Password Hashing
  *
-*/
+ * Default function to create a hashed password for GetSimple
+ *
+ * @since 2.0
+ * @uses GSLOGINSALT
+ *
+ * @param string $p 
+ * @return string
+ */
 function passhash($p) {
 	if(defined('GSLOGINSALT') && GSLOGINSALT != '') { 
 		$logsalt = sha1(GSLOGINSALT);
@@ -541,5 +560,426 @@ function passhash($p) {
 	
 	return sha1($p . $logsalt);
 }
+
+/**
+ * Get Available Pages
+ *
+ * Lists all available pages for plugin use
+ * same exact code as menu_data();
+ *
+ * @since 2.0
+ * @uses GSDATAPAGESPATH
+ * @uses find_url
+ * @uses getXML
+ * @uses subval_sort
+ *
+ * @param bool $xml Optional, default is false. 
+ *				True will return value in XML format. False will return an array
+ * @return array|string Type 'string' in this case will be XML 
+ */
+function get_available_pages($id = null,$xml=false) {
+    $menu_extract = '';
+    
+    $path = GSDATAPAGESPATH;
+    $dir_handle = @opendir($path) or die("Unable to open $path");
+    $filenames = array();
+    while ($filename = readdir($dir_handle)) {
+        $filenames[] = $filename;
+    }
+    closedir($dir_handle);
+    
+    $count="0";
+    $pagesArray = array();
+    if (count($filenames) != 0) {
+        foreach ($filenames as $file) {
+            if ($file == "." || $file == ".." || is_dir($path . $file) || $file == ".htaccess"  ) {
+                // not a page data file
+            } else {
+								$data = getXML($path . $file);
+                if ($data->private != 'Y') {
+                    $pagesArray[$count]['menuStatus'] = $data->menuStatus;
+                    $pagesArray[$count]['menuOrder'] = $data->menuOrder;
+                    $pagesArray[$count]['menu'] = $data->menu;
+                    $pagesArray[$count]['parent'] = $data->parent;
+                    $pagesArray[$count]['title'] = $data->title;
+                    $pagesArray[$count]['url'] = $data->url;
+                    $pagesArray[$count]['private'] = $data->private;
+                    $pagesArray[$count]['pubDate'] = $data->pubDate;
+                    $count++;
+                }
+            }
+        }
+    }
+    
+    $pagesSorted = subval_sort($pagesArray,'menuOrder');
+    if (count($pagesSorted) != 0) { 
+      $count = 0;
+      if (!$xml){
+        foreach ($pagesSorted as $page) {
+          $text = (string)$page['menu'];
+          $pri = (string)$page['menuOrder'];
+          $parent = (string)$page['parent'];
+          $title = (string)$page['title'];
+          $slug = (string)$page['url'];
+          $menuStatus = (string)$page['menuStatus'];
+          $private = (string)$page['private'];
+					$pubDate = (string)$page['pubDate'];
+          
+          $url = find_url($slug,$parent);
+          
+          $specific = array("slug"=>$slug,"url"=>$url,"parent_slug"=>$parent,"title"=>$title,"menu_priority"=>$pri,"menu_text"=>$text,"menu_status"=>$menuStatus,"private"=>$private,"pub_date"=>$pubDate);
+          
+          if ($id == $slug) { 
+              return $specific; 
+              exit; 
+          } else {
+              $menu_extract[] = $specific;
+          }
+        } 
+        return $menu_extract;
+      } else {
+        $xml = '<?xml version="1.0" encoding="UTF-8"?><channel>';    
+	        foreach ($pagesSorted as $page) {
+            $text = $page['menu'];
+            $pri = $page['menuOrder'];
+            $parent = $page['parent'];
+            $title = $page['title'];
+            $slug = $page['url'];
+            $pubDate = $page['pubDate'];
+            $menuStatus = $page['menuStatus'];
+            $private = $page['private'];
+           	
+            $url = find_url($slug,$parent);
+            
+            $xml.="<item>";
+            $xml.="<slug><![CDATA[".$slug."]]></slug>";
+            $xml.="<pubDate><![CDATA[".$pubDate."]]></pubDate>";
+            $xml.="<url><![CDATA[".$url."]]></url>";
+            $xml.="<parent><![CDATA[".$parent."]]></parent>";
+            $xml.="<title><![CDATA[".$title."]]></title>";
+            $xml.="<menuOrder><![CDATA[".$pri."]]></menuOrder>";
+            $xml.="<menu><![CDATA[".$text."]]></menu>";
+            $xml.="<menuStatus><![CDATA[".$menuStatus."]]></menuStatus>";
+            $xml.="<private><![CDATA[".$private."]]></private>";
+            $xml.="</item>";
+	        }
+	        $xml.="</channel>";
+	        return $xml;
+        }
+    }
+}
+
+  
+/**
+ * Update Slugs
+ *
+ * @since 2.04
+ * @uses $url
+ * @uses GSDATAPAGESPATH
+ * @uses XMLsave
+ *
+ */
+function updateSlugs($existingUrl){
+      global $url;
+
+      $path = GSDATAPAGESPATH;
+      $dir_handle = @opendir($path) or die("Unable to open $path");
+      $filenames = array();
+      while ($filename = readdir($dir_handle)) {
+        $ext = substr($filename, strrpos($filename, '.') + 1);
+        if ($ext=="xml"){
+          $filenames[] = $filename;
+        }
+      }
+
+      if (count($filenames) != 0) {
+        foreach ($filenames as $file) {
+          
+          if ($file == "." || $file == ".." || is_dir(GSDATAPAGESPATH.$file) || $file == ".htaccess"  ) {
+            // not a page data file
+          } else {
+            $thisfile = @file_get_contents(GSDATAPAGESPATH.$file);
+            $data = simplexml_load_string($thisfile);
+            if ($data->parent==$existingUrl){
+              $data->parent=$url;
+              XMLsave($data, GSDATAPAGESPATH.$file);
+            }   
+          } 
+        }
+      }
+} 
+
+
+/**
+ * List Pages Json
+ *
+ * This is used by the CKEditor link-local plguin function: ckeditor_add_page_link()
+ *
+ * @author Joshas: mailto:joshas@gmail.com
+ *
+ * @since 3.0
+ * @uses subval_sort
+ * @uses GSDATAPAGESPATH
+ * @uses getXML
+ *
+ * @returns array
+ */
+function list_pages_json() {
+	// get local pages list for ckeditor local page link selector
+	$path = GSDATAPAGESPATH;
+	$filenames = getFiles($path);
+	$count="0";
+	$pagesArray = array();
+	if (count($filenames) != 0) { 
+		foreach ($filenames as $file) {
+			if (isFile($file, $path, 'xml')) {
+				$data = getXML($path .$file);
+				$pagesArray[$count]['title'] = html_entity_decode($data->title, ENT_QUOTES, 'UTF-8');
+				$pagesArray[$count]['parent'] = $data->parent;
+			if ($data->parent != '') { 
+				$parentdata = getXML($path . $data->parent .'.xml');
+				$parentTitle = $parentdata->title;
+				$pagesArray[$count]['sort'] = $parentTitle .' '. $data->title;
+			} else {
+				$pagesArray[$count]['sort'] = $data->title;
+			}
+			$pagesArray[$count]['url'] = $data->url;
+			$parentTitle = '';
+			$count++;
+			}
+		}
+	}
+	$pagesSorted = subval_sort($pagesArray,'sort');
+	$pageList = array();
+	if (count($pagesSorted) != 0) { 
+		foreach ($pagesSorted as $page) {
+			if ($page['parent'] != '') {$page['parent'] = $page['parent']."/"; $dash = '- '; } else { $dash = ""; }
+			if ($page['title'] == '' ) { $page['title'] = '[No Title] '.$page['url']; }
+			array_push($pageList, array( $dash . $page['title'], find_url($page['url'],$page['parent'])));
+		}
+	}
+	return json_encode($pageList);
+}
+
+/**
+ * CKEditor Add Local Page Link
+ *
+ * This is used by the CKEditor to link to internal pages
+ *
+ * @author Joshas: mailto:joshas@gmail.com
+ *
+ * @since 3.0
+ * @uses list_pages_json
+ *
+ * @returns array
+ */
+function ckeditor_add_page_link(){
+	echo "
+	<script type=\"text/javascript\">
+	//<![CDATA[
+	// Get a CKEDITOR.dialog.contentDefinition object by its ID.
+	var getById = function(array, id, recurse) {
+		for (var i = 0, item; (item = array[i]); i++) {
+			if (item.id == id) return item;
+				if (recurse && item[recurse]) {
+					var retval = getById(item[recurse], id, recurse);
+					if (retval) return retval;
+				}
+		}
+		return null;
+	};
+
+	// modify existing Link dialog
+	CKEDITOR.on( 'dialogDefinition', function( ev )	{
+		if ((ev.editor != editor) || (ev.data.name != 'link')) return;
+
+		// Overrides definition.
+		var definition = ev.data.definition;
+		definition.onFocus = CKEDITOR.tools.override(definition.onFocus, function(original) {
+			return function() {
+				original.call(this);
+					if (this.getValueOf('info', 'linkType') == 'localPage') {
+						this.getContentElement('info', 'localPage_path').select();
+					}
+			};
+		});
+
+		// Overrides linkType definition.
+		var infoTab = definition.getContents('info');
+		var content = getById(infoTab.elements, 'linkType');
+
+		content.items.unshift(['Link to local page', 'localPage']);
+		content['default'] = 'localPage';
+		infoTab.elements.push({
+			type: 'vbox',
+			id: 'localPageOptions',
+			children: [{
+				type: 'select',
+				id: 'localPage_path',
+				label: 'Select page:',
+				required: true,
+				items: " . list_pages_json() . ",
+				setup: function(data) {
+					if ( data.localPage )
+						this.setValue( data.localPage );
+				}
+			}]
+		});
+		content.onChange = CKEDITOR.tools.override(content.onChange, function(original) {
+			return function() {
+				original.call(this);
+				var dialog = this.getDialog();
+				var element = dialog.getContentElement('info', 'localPageOptions').getElement().getParent().getParent();
+				if (this.getValue() == 'localPage') {
+					element.show();
+					if (editor.config.linkShowTargetTab) {
+						dialog.showPage('target');
+					}
+					var uploadTab = dialog.definition.getContents('upload');
+					if (uploadTab && !uploadTab.hidden) {
+						dialog.hidePage('upload');
+					}
+				}
+				else {
+					element.hide();
+				}
+			};
+		});
+		content.setup = function(data) {
+			if (!data.type || (data.type == 'url') && !data.url) {
+				data.type = 'localPage';
+			}
+			else if (data.url && !data.url.protocol && data.url.url) {
+				if (path) {
+					data.type = 'localPage';
+					data.localPage_path = path;
+					delete data.url;
+				}
+			}
+			this.setValue(data.type);
+		};
+		content.commit = function(data) {
+			data.type = this.getValue();
+			if (data.type == 'localPage') {
+				data.type = 'url';
+				var dialog = this.getDialog();
+				dialog.setValueOf('info', 'protocol', '');
+				dialog.setValueOf('info', 'url', dialog.getValueOf('info', 'localPage_path'));
+			}
+		};
+	});
+	//]]>
+	</script>";
+}
+
+
+/**
+ * Recursive list of pages
+ *
+ * Returns a recursive list of items for the main page
+ *
+ * @author Mike
+ *
+ * @since 3.0
+ * @uses $pagesSorted
+ *
+ * @param string $parent
+ * @param string $menu
+ * @param int $level
+ * 
+ * @returns string
+ */
+function get_pages_menu($parent, $menu,$level) {
+	global $pagesSorted;
+	$items=array();
+	foreach ($pagesSorted as $page) {
+		if ($page['parent']==$parent){
+			$items[(string)$page['url']]=$page;
+		}	
+	}	
+	if (count($items)>0){
+		foreach ($items as $page) {
+		  	$dash="";
+		  	if ($page['parent'] != '') {
+	  			$page['parent'] = $page['parent']."/";
+	  		}
+			for ($i=0;$i<=$level-1;$i++){
+				if ($i!=$level-1){
+	  				$dash .= '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+				} else {
+					$dash .= '<span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;&nbsp;</span>';
+				}
+			} 
+			$menu .= '<tr id="tr-'.$page['url'] .'" >';
+			if ($page['title'] == '' ) { $page['title'] = '[No Title] &nbsp;&raquo;&nbsp; <em>'. $page['url'] .'</em>'; }
+			if ($page['menuStatus'] != '' ) { $page['menuStatus'] = ' <sup>['.i18n_r('MENUITEM_SUBTITLE').']</sup>'; } else { $page['menuStatus'] = ''; }
+			if ($page['private'] != '' ) { $page['private'] = ' <sup>['.i18n_r('PRIVATE_SUBTITLE').']</sup>'; } else { $page['private'] = ''; }
+			if ($page['url'] == 'index' ) { $homepage = ' <sup>['.i18n_r('HOMEPAGE_SUBTITLE').']</sup>'; } else { $homepage = ''; }
+			$menu .= '<td class="pagetitle">'. $dash .'<a title="'.i18n_r('EDITPAGE_TITLE').': '. cl($page['title']) .'" href="edit.php?id='. $page['url'] .'" >'. cl($page['title']) .'</a><span class="showstatus toggle" >'. $homepage . $page['menuStatus'] . $page['private'] .'</span></td>';
+			$menu .= '<td style="width:80px;text-align:right;" ><span>'. shtDate($page['date']) .'</span></td>';
+			$menu .= '<td class="secondarylink" >';
+			$menu .= '<a title="'.i18n_r('VIEWPAGE_TITLE').': '. cl($page['title']) .'" target="_blank" href="'. find_url($page['url'],$page['parent']) .'">#</a>';
+			$menu .= '</td>';
+			if ($page['url'] != 'index' ) {
+				$menu .= '<td class="delete" ><a class="delconfirm" href="deletefile.php?id='. $page['url'] .'&nonce='.get_nonce("delete", "deletefile.php").'" title="'.i18n_r('DELETEPAGE_TITLE').': '. cl($page['title']) .'" >X</a></td>';
+			} else {
+				$menu .= '<td class="delete" ></td>';
+			}
+			$menu .= '</tr>';
+			$menu = get_pages_menu((string)$page['url'], $menu,$level+1);	  	
+		}
+	}
+	return $menu;
+}
+
+/**
+ * Recursive list of pages for Dropdown menu
+ *
+ * Returns a recursive list of items for the main page
+ *
+ * @author Mike
+ *
+ * @since 3.0
+ * @uses $pagesSorted
+ *
+ * @param string $parent
+ * @param string $menu
+ * @param int $level
+ * 
+ * @returns string
+ */
+function get_pages_menu_dropdown($parentitem, $menu,$level) {
+	
+	global $pagesSorted;
+	global $parent; 
+	
+	$items=array();
+	foreach ($pagesSorted as $page) {
+		if ($page['parent']==$parentitem){
+			$items[(string)$page['url']]=$page;
+		}	
+	}	
+	if (count($items)>0){
+		foreach ($items as $page) {
+		  	$dash="";
+		  	if ($page['parent'] != '') {
+	  			$page['parent'] = $page['parent']."/";
+	  		}
+			for ($i=0;$i<=$level-1;$i++){
+				if ($i!=$level-1){
+	  				$dash .= '<span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>';
+				} else {
+					$dash .= '<span>&nbsp;&nbsp;&ndash;&nbsp;&nbsp;&nbsp;</span>';
+				}
+			} 
+			if ($parent == (string)$page['url']) { $sel="selected"; } else { $sel=""; }
+			$menu .= '<option '.$sel.' value="'.$page['url'] .'" >'.$dash.$page['url'].'</option>';
+			$menu = get_pages_menu_dropdown((string)$page['url'], $menu,$level+1);	  	
+		}
+	}
+	return $menu;
+}
+
+
 
 ?>
